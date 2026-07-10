@@ -149,3 +149,42 @@ body {
 @media (min-width: 700px) {
   .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
 }
+
+/* ===== Contact ===== */
+.contact-inner { text-align: center; }
+.contact-inner .section-title::after { margin-inline: auto; }
+
+.contact-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.btn-secondary {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--muted);
+  padding: 12px 30px;
+  border-radius: 999px;
+}
+
+@media (min-width: 700px) {
+  .contact-actions { flex-direction: row; justify-content: center; }
+}
+
+/* ===== Footer ===== */
+#footer {
+  border-top: 1px solid #26262b;
+  padding-block: 32px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.footer-wordmark {
+  width: 200px;
+  margin: 0 auto 10px;
+}
