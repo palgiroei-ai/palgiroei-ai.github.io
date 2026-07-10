@@ -1,11 +1,11 @@
 /* ===== Design tokens ===== */
 :root {
-  --bg: #0c0c0e;
-  --surface: #17171b;
-  --text: #f4f4f1;
-  --muted: #b7b7b0;
-  --accent: #ff7a2f;
-  --accent-press: #e5661d;
+  --bg: #0e0b12;
+  --surface: #1a1522;
+  --text: #f4f2f6;
+  --muted: #b3acbd;
+  --accent: #b16ce8;
+  --accent-press: #9a4fd6;
   --radius: 14px;
   --maxw: 1060px;
 }
@@ -62,7 +62,7 @@ body {
   place-items: center;
   text-align: center;
   background:
-    linear-gradient(rgba(12,12,14,0.55), rgba(12,12,14,0.88)),
+    linear-gradient(rgba(14,11,18,0.6), rgba(14,11,18,0.92)),
     url("assets/img/hero.jpg") center / cover no-repeat;
   padding-block: 48px;
 }
@@ -189,4 +189,35 @@ body {
 .footer-wordmark {
   width: 200px;
   margin: 0 auto 10px;
+}
+
+/* ===== About grid (photo beside text on desktop) ===== */
+.about-grid {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.about-photo {
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 380px;
+  justify-self: center;
+}
+
+@media (min-width: 700px) {
+  .about-grid { grid-template-columns: 1.4fr 1fr; gap: 40px; }
+  .about-photo { justify-self: start; }
+}
+
+/* ===== Photo band ===== */
+.photo-band {
+  min-height: 300px;
+  background:
+    linear-gradient(rgba(14,11,18,0.25), rgba(14,11,18,0.25)),
+    url("assets/img/band.jpg") center 30% / cover no-repeat;
+}
+
+@media (min-width: 700px) {
+  .photo-band { min-height: 420px; }
 }
