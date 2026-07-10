@@ -413,3 +413,43 @@ body { position: relative; }
 }
 
 /* (duotone treatment removed per Roei 2026-07-10) */
+
+/* ===== Fun: chalk dust + hold confetti + logo dyno ===== */
+.chalk {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(244,242,246,0.9);
+  filter: blur(1px);
+  pointer-events: none;
+  z-index: 60;
+  will-change: transform, opacity;
+}
+
+.hold-confetti {
+  position: fixed;
+  top: 0;
+  pointer-events: none;
+  z-index: 60;
+  will-change: transform, opacity;
+}
+
+.hero-logo { cursor: pointer; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes dyno {
+    0%   { transform: none; }
+    25%  { transform: scaleX(1.12) scaleY(0.85) translateY(4px); }
+    55%  { transform: scaleX(0.94) scaleY(1.08) translateY(-26px); }
+    80%  { transform: scaleY(0.94) translateY(2px); }
+    100% { transform: none; }
+  }
+
+  /* opacity:1 keeps the logo visible while .dyno replaces the entrance
+     animation's forwards fill */
+  .hero-logo.dyno {
+    animation: dyno 0.7s cubic-bezier(0.3, 0.6, 0.4, 1);
+    opacity: 1;
+  }
+}
