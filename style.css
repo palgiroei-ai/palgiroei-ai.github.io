@@ -957,3 +957,15 @@ body { position: relative; }
   border-color: rgba(177,108,232,0.42);
   box-shadow: 0 30px 70px rgba(0,0,0,0.45), 0 0 24px rgba(177,108,232,0.14);
 }
+
+/* Instagram links */
+.btn-insta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-insta svg { width: 18px; height: 18px; }
+
+.footer-insta { color: var(--accent); text-decoration: none; }
+.footer-insta:hover { text-decoration: underline; }
