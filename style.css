@@ -106,3 +106,7 @@ body {
 @media (min-width: 700px) {
   #hero h1 { font-size: 3.4rem; }
 }
+
+/* ===== About ===== */
+.about-text { max-width: 62ch; font-size: 1.05rem; }
+.about-text p + p { margin-top: 14px; }
