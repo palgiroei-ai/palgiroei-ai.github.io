@@ -96,3 +96,63 @@ if (logo && !reduceMotion) {
   });
   logo.addEventListener('animationend', () => logo.classList.remove('dyno'));
 }
+
+// --- Ambient chalk motes (drift up; streak with scroll velocity) ---
+if (!reduceMotion) {
+  const wrap = document.createElement('div');
+  wrap.className = 'motes';
+  document.body.appendChild(wrap);
+
+  const count = Math.min(60, Math.round(window.innerWidth * window.innerHeight / 26000));
+  const motes = [];
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'mote';
+    const size = 2 + Math.random() * 3;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.opacity = (0.12 + Math.random() * 0.25).toFixed(2);
+    wrap.appendChild(el);
+    motes.push({
+      el,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vy: 8 + Math.random() * 14,
+      amp: 6 + Math.random() * 18,
+      phase: Math.random() * Math.PI * 2,
+      freq: 0.2 + Math.random() * 0.5
+    });
+  }
+
+  let scrollVel = 0;
+  let lastY = window.scrollY;
+  let lastScrollT = performance.now();
+  window.addEventListener('scroll', () => {
+    const now = performance.now();
+    const dt = Math.max(8, now - lastScrollT);
+    scrollVel = scrollVel * 0.7 + ((window.scrollY - lastY) / dt) * 1000 * 0.3;
+    lastY = window.scrollY;
+    lastScrollT = now;
+  }, { passive: true });
+
+  let lastT = performance.now();
+  const tick = (now) => {
+    const dt = Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+    scrollVel *= 0.92;
+    const streak = 1 + Math.min(3, Math.abs(scrollVel) / 900);
+    const drag = scrollVel * 0.12;
+    const h = window.innerHeight;
+    const w = window.innerWidth;
+    for (const m of motes) {
+      m.y -= (m.vy + drag) * dt;
+      m.phase += m.freq * dt;
+      if (m.y < -30) { m.y = h + 30; m.x = Math.random() * w; }
+      else if (m.y > h + 30) { m.y = -30; m.x = Math.random() * w; }
+      const x = m.x + Math.sin(m.phase) * m.amp;
+      m.el.style.transform = `translate3d(${x}px, ${m.y}px, 0) scaleY(${streak})`;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}

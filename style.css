@@ -453,3 +453,21 @@ body { position: relative; }
     opacity: 1;
   }
 }
+
+/* ===== Ambient chalk motes ===== */
+.motes {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.mote {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: #f4f2f6;
+  filter: blur(0.5px);
+  will-change: transform;
+}
