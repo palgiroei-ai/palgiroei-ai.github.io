@@ -396,10 +396,10 @@ body { position: relative; }
 .route path {
   fill: none;
   stroke: var(--accent);
-  stroke-width: 2.5;
+  stroke-width: 4;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 .route path:nth-child(2) { stroke-width: 2; opacity: 0.35; }
