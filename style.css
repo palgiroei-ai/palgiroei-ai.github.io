@@ -293,7 +293,6 @@ body::after {
 
 .gallery-grid img:hover {
   transform: scale(1.035);
-  filter: brightness(1.08);
 }
 
 .btn-primary { transition: transform 0.2s ease, background 0.2s ease; }
@@ -380,4 +379,47 @@ body::after {
   .js .section-title.in::after {
     width: 56px;
   }
+}
+
+/* ===== Route line (climbing topo down the page) ===== */
+body { position: relative; }
+
+.route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.route path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .route path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+}
+
+/* ===== Duotone photo treatment ===== */
+.duo {
+  filter: grayscale(1) sepia(0.35) hue-rotate(215deg) saturate(2.4) brightness(0.92) contrast(1.05);
+  transition: filter 0.5s ease;
+}
+
+.duo:hover,
+.duo:active {
+  filter: none;
+}
+
+.photo-band {
+  filter: grayscale(1) sepia(0.35) hue-rotate(215deg) saturate(2.2) brightness(0.85) contrast(1.05);
 }

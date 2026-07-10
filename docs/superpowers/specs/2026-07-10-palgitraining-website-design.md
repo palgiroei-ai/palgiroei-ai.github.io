@@ -89,6 +89,10 @@ structure must not block that.
 
 ## Future phases (out of scope for v1)
 
+- Stats strip with count-up numbers (years coaching, athletes, national team,
+  international comps) — approved by Roei 2026-07-10, waiting on him to
+  collect/confirm the real numbers. Numbers must come from Roei, never
+  invented.
 - Testimonials collection and section.
 - Athletes area: links to existing Apps Script tools (e.g., Wingate sign-up
   web form) — zero new infrastructure.
