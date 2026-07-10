@@ -67,6 +67,8 @@ body {
   padding-block: 48px;
 }
 
+.hero-inner { width: 100%; }
+
 .hero-logo {
   width: 140px;
   height: auto;
