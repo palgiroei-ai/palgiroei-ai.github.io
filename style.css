@@ -969,3 +969,10 @@ body { position: relative; }
 
 .footer-insta { color: var(--accent); text-decoration: none; }
 .footer-insta:hover { text-decoration: underline; }
+
+/* Reveal stagger for gallery rows 7-9 */
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-grid img:nth-child(7) { --rd: 0.08s; }
+  .gallery-grid img:nth-child(8) { --rd: 0.16s; }
+  .gallery-grid img:nth-child(9) { --rd: 0.24s; }
+}
