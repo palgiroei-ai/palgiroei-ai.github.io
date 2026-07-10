@@ -38,6 +38,9 @@ structure must not block that.
    experience), and a prominent "צור קשר" button (jumps to contact section).
 2. **About (אודות)** — credentials, coaching experience incl. national youth
    team, the physio+coach combination as the differentiator.
+2b. **Stats strip** (added at checkpoint, numbers from Roei 2026-07-10):
+   10+ שנות אימון · 50+ משלחות בינלאומיות · 40+ פודיומים ארציים ·
+   15+ גמרים בינלאומיים (כולל מדליות בינלאומיות) — count-up on scroll.
 3. **Services (שירותים)** — four cards, each with "who it's for" + what it
    includes (2–3 sentences):
    - אימון טיפוס תחרותי (competitive climbing coaching)
@@ -89,10 +92,6 @@ structure must not block that.
 
 ## Future phases (out of scope for v1)
 
-- Stats strip with count-up numbers (years coaching, athletes, national team,
-  international comps) — approved by Roei 2026-07-10, waiting on him to
-  collect/confirm the real numbers. Numbers must come from Roei, never
-  invented.
 - Testimonials collection and section.
 - Athletes area: links to existing Apps Script tools (e.g., Wingate sign-up
   web form) — zero new infrastructure.

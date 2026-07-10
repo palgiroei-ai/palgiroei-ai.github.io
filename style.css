@@ -471,3 +471,38 @@ body { position: relative; }
   filter: blur(0.5px);
   will-change: transform;
 }
+
+/* ===== Stats strip ===== */
+.stats-section { padding-block: 24px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 16px;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.stat-label { font-weight: 600; }
+
+.stat-sub {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 700px) {
+  .stats-grid { grid-template-columns: repeat(4, 1fr); }
+  .stat-num { font-size: 3.2rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stats-grid .stat:nth-child(2) { --rd: 0.1s; }
+  .stats-grid .stat:nth-child(3) { --rd: 0.2s; }
+  .stats-grid .stat:nth-child(4) { --rd: 0.3s; }
+}
