@@ -25,9 +25,11 @@ ipconfig getifaddr en0        # give Roei http://<that-ip>:8080 (same Wi-Fi)
 ## Photos
 
 Source originals: `/Users/tamooz/Photos for website` (never modify).
-Process with `sips` into `assets/img/` — budget: all images ≤ 2.5 MB total,
-hero ≤ 450 KB. Permission confirmed by Roei (2026-07-10) for all current
-photos, including minors.
+Process with `sips` into `assets/img/` (it also converts the `.jpg.avif`
+files). Weight: currently 2.6 MB total — keep near this; hero ≤ 450 KB.
+Permission confirmed by Roei (2026-07-10) for all current photos.
+**When replacing an image under the same filename, bump its `?v=N`
+query in index.html — phones cache aggressively.**
 
 ## Content rules
 
@@ -35,6 +37,11 @@ photos, including minors.
 - Gender-inclusive forms (ספורטאיות וספורטאים) in all visible copy.
 - Stats numbers come from Roei verbatim — never invent or adjust.
 - Duotone photo treatment was tried and rejected — don't reintroduce.
+- Service mockups mirror Roei's real Google Sheets files: real structure and
+  colors (#1f1434 headers, #f7efdf cream cells, #d9d2e9 lavender), fictional
+  athletes/data only ("דנה כ׳ · הדגמה"). Never copy real athlete names or
+  values, never invent metrics his files don't have.
+- App-style mockup variant preserved on branch `services-app-mockups`.
 
 ## Docs
 

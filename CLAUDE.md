@@ -10,3 +10,8 @@
   session scratchpad. Photo budget: ≤2.5MB total, hero ≤450KB, via `sips`.
 - Copy: Roei's voice, gender-inclusive (ספורטאיות וספורטאים), stats verbatim
   from Roei. Duotone photos were rejected — don't reintroduce.
+- Photo replaced under same filename → bump `?v=N` cache-buster in index.html.
+- Service mockups: structure/colors from Roei's real sheets (#1f1434 /
+  #f7efdf / #d9d2e9), data always fictional; never invent metrics. Reference
+  files via gws (re-auth needed every ~7 days). Variant A on branch
+  `services-app-mockups`.

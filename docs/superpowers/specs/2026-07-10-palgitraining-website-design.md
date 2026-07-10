@@ -101,3 +101,17 @@ structure must not block that.
   and does not constrain this static site.
 - Custom domain.
 - English version (only if international need appears).
+
+## Revision — 2026-07-10 evening (services redesign, shipped)
+
+Supersedes the "Services" bullet in Page structure:
+
+- Services: four full-width alternating editorial sections (55/45 desktop
+  split, numbered kickers, benefit bullets, per-service CTA), each with a
+  Google-Sheets-style mockup mirroring Roei's real files (block tab w/ S&C
+  sets/reps table; Schedule strip + מעקב אימון; tablet video analysis;
+  physio exercise table). Fictional data only; real palette #1f1434/#f7efdf/
+  #d9d2e9. App-style variant kept on branch `services-app-mockups`.
+- New section after services: "כך נראה תהליך העבודה" — 5 steps with icons.
+- Gallery renamed "גלריה", 9 photos.
+- Instagram (instagram.com/palgi.roei) in contact + footer.
