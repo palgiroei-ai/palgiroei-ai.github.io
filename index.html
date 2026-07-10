@@ -10,8 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <div class="aurora" aria-hidden="true"></div>
   <header id="hero">
     <div class="hero-inner container">
       <img class="hero-logo" src="assets/logo.jpg" alt="PalgiTraining לוגו" width="140" height="140">
@@ -24,33 +27,33 @@
   <main>
     <section id="about" class="section">
       <div class="container">
-        <h2 class="section-title">אודות</h2>
+        <h2 class="section-title reveal">אודות</h2>
         <div class="about-grid">
-          <div class="about-text">
+          <div class="about-text reveal">
             <p>אני רועי פלגי, פיזיותרפיסט ומאמן טיפוס תחרותי. אני מאמן ספורטאים תחרותיים — בהם ספורטאי נבחרות ישראל בטיפוס — ומלווה אותם באימונים, בבניית תוכניות אימון ובתחרויות בארץ ובעולם.</p>
             <p>השילוב בין פיזיותרפיה לאימון הוא הבסיס לשיטת העבודה שלי: תוכנית שמפתחת ביצועים ובאותה נשימה שומרת על גוף בריא — גם בעומסי אימון גבוהים. כל ספורטאי מקבל תוכנית אישית, מעקב צמוד ותקשורת פתוחה איתו ועם ההורים.</p>
           </div>
-          <img class="about-photo" src="assets/img/about.jpg" alt="רועי פלגי" loading="lazy">
+          <img class="about-photo reveal" src="assets/img/about.jpg" alt="רועי פלגי" loading="lazy">
         </div>
       </div>
     </section>
     <section id="services" class="section">
       <div class="container">
-        <h2 class="section-title">שירותים</h2>
+        <h2 class="section-title reveal">שירותים</h2>
         <div class="cards">
-          <article class="card">
+          <article class="card reveal">
             <h3>אימון טיפוס תחרותי</h3>
             <p>ליווי אישי וקבוצתי לספורטאים תחרותיים: תכנון עונה, בניית בלוקים של אימונים, מעקב התקדמות והכנה לתחרויות בארץ ובחו״ל.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <h3>תוכניות אימון מרחוק</h3>
             <p>תוכנית אימון אישית שנבנית לפי המטרות, הרמה והזמן שלכם — עם מעקב ועדכונים שוטפים, מכל מקום בארץ.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <h3>שיעורי טכניקה אישיים</h3>
             <p>אימון אחד־על־אחד לשיפור הטכניקה: קריאת מסלולים, עבודת רגליים, יעילות תנועה וביטחון על הקיר. מתאים לכל הרמות.</p>
           </article>
-          <article class="card">
+          <article class="card reveal">
             <h3>פיזיותרפיה</h3>
             <p>אבחון וטיפול בפציעות טיפוס וספורט, ליווי בחזרה לאימונים ותוכניות חיזוק ומניעה — מפיזיותרפיסט שמכיר את הספורט מבפנים.</p>
           </article>
@@ -60,22 +63,22 @@
     <div class="photo-band" role="img" aria-label="רועי עם ספורטאי בזירת תחרות בינלאומית"></div>
     <section id="gallery" class="section">
       <div class="container">
-        <h2 class="section-title">מהאימונים והתחרויות</h2>
+        <h2 class="section-title reveal">מהאימונים והתחרויות</h2>
         <div class="gallery-grid">
-          <img src="assets/img/gallery-01.jpg" alt="רועי פלגי מטפס הובלה על סלע" loading="lazy">
-          <img src="assets/img/gallery-02.jpg" alt="רועי מדריך ספורטאית צעירה בתחרות" loading="lazy">
-          <img src="assets/img/gallery-03.jpg" alt="ניתוח וידאו עם ספורטאי צעיר" loading="lazy">
-          <img src="assets/img/gallery-04.jpg" alt="רועי וספורטאי אחרי תחרות" loading="lazy">
-          <img src="assets/img/gallery-05.jpg" alt="רועי צוחק באירוע טיפוס" loading="lazy">
-          <img src="assets/img/gallery-06.jpg" alt="רועי בונה מסלול על קיר טיפוס" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-01.jpg" alt="רועי פלגי מטפס הובלה על סלע" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-02.jpg" alt="רועי מדריך ספורטאית צעירה בתחרות" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-03.jpg" alt="ניתוח וידאו עם ספורטאי צעיר" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-04.jpg" alt="רועי וספורטאי אחרי תחרות" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-05.jpg" alt="רועי צוחק באירוע טיפוס" loading="lazy">
+          <img class="reveal" src="assets/img/gallery-06.jpg" alt="רועי בונה מסלול על קיר טיפוס" loading="lazy">
         </div>
       </div>
     </section>
     <section id="contact" class="section">
       <div class="container contact-inner">
-        <h2 class="section-title">צור קשר</h2>
-        <p>רוצים להתחיל? כתבו לי ונחשוב יחד מה מתאים לכם.</p>
-        <div class="contact-actions">
+        <h2 class="section-title reveal">צור קשר</h2>
+        <p class="reveal">רוצים להתחיל? כתבו לי ונחשוב יחד מה מתאים לכם.</p>
+        <div class="contact-actions reveal">
           <a class="btn-primary" href="https://wa.me/972507721477?text=%D7%94%D7%99%D7%99%20%D7%A8%D7%95%D7%A2%D7%99%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8">וואטסאפ</a>
           <a class="btn-secondary" href="mailto:palgitraining@gmail.com">palgitraining@gmail.com</a>
         </div>
