@@ -976,3 +976,6 @@ body { position: relative; }
   .gallery-grid img:nth-child(8) { --rd: 0.16s; }
   .gallery-grid img:nth-child(9) { --rd: 0.24s; }
 }
+
+/* Crop from the top for portrait shots where the action is high in frame */
+.gallery-grid img.pos-top { object-position: center top; }
