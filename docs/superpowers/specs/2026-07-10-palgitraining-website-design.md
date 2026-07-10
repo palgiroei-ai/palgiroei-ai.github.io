@@ -39,8 +39,9 @@ structure must not block that.
 2. **About (אודות)** — credentials, coaching experience incl. national youth
    team, the physio+coach combination as the differentiator.
 2b. **Stats strip** (added at checkpoint, numbers from Roei 2026-07-10):
-   10+ שנות אימון · 50+ משלחות בינלאומיות · 40+ פודיומים ארציים ·
-   15+ גמרים בינלאומיים (כולל מדליות בינלאומיות) — count-up on scroll.
+   10+ שנות אימון · 50+ משלחות בינלאומיות · 60+ פודיומים ארציים ·
+   25+ גמרים בינלאומיים (כולל מדליות בינלאומיות) — count-up on scroll.
+   (Podiums 40→60 and finals 15→25 updated per Roei, 2026-07-10.)
 3. **Services (שירותים)** — four cards, each with "who it's for" + what it
    includes (2–3 sentences):
    - אימון טיפוס תחרותי (competitive climbing coaching)
