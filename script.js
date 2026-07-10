@@ -9,12 +9,17 @@ const io = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-const routePath = document.querySelector('.route path');
-if (routePath && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+const routePaths = document.querySelectorAll('.route path');
+if (routePaths.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const drawRoute = () => {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    const p = max > 0 ? Math.min(1, window.scrollY / max) : 1;
-    routePath.style.strokeDashoffset = String(1 - p);
+    // The drawn tip tracks a point just above mid-viewport, so the lines
+    // visibly form in the middle of the screen while scrolling.
+    const doc = document.documentElement;
+    const p = Math.min(1, (window.scrollY + window.innerHeight * 0.55) / doc.scrollHeight);
+    routePaths.forEach((path, i) => {
+      const pi = Math.max(0, Math.min(1, p - i * 0.05));
+      path.style.strokeDashoffset = String(1 - pi);
+    });
   };
   window.addEventListener('scroll', () => requestAnimationFrame(drawRoute), { passive: true });
   window.addEventListener('resize', drawRoute);
