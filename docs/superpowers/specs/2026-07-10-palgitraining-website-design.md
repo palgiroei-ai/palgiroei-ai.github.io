@@ -1,0 +1,100 @@
+# PalgiTraining Website — Design Spec (v1: Informative)
+
+**Date:** 2026-07-10
+**Owner:** Roei Palgi
+**Status:** Approved design, pending spec review
+
+## Purpose
+
+A public marketing website whose primary goal is **attracting new clients** —
+prospective athletes and their parents. A future phase will add a functional
+athletes area (schedules, sign-up, eventually a login portal), and the v1
+structure must not block that.
+
+## Audience & language
+
+- Prospective competitive climbers and their parents (Israel).
+- Amateur climbers looking for remote plans, technique sessions, or physio.
+- **Hebrew only, RTL**, mobile-first — most visitors will arrive from a
+  WhatsApp link on a phone.
+
+## Platform & hosting (decided: Approach A)
+
+- New GitHub repository **`palgiroei-ai/palgiroei-ai.github.io`** (this repo),
+  separate from `palgi-training`.
+- **GitHub Pages** from the `main` branch — site publishes at
+  `https://palgiroei-ai.github.io` (root URL, no path).
+- Plain **HTML + CSS + minimal JS**. No framework, no build step. One
+  `index.html`, one stylesheet, an `assets/` folder for images.
+- Deploy = `git push` to `main`. Per Roei's standing deploy rule: **ask before
+  every push** once the site is live.
+- Domain: free `github.io` address for now. A custom domain can be attached to
+  the same repo later without rebuilding anything.
+
+## Page structure (single page, top to bottom)
+
+1. **Hero** — white-on-black PalgiTraining logo, Roei's name, one-line
+   positioning: physiotherapist & competitive climbing coach (national-team
+   experience), and a prominent "צור קשר" button (jumps to contact section).
+2. **About (אודות)** — credentials, coaching experience incl. national youth
+   team, the physio+coach combination as the differentiator.
+3. **Services (שירותים)** — four cards, each with "who it's for" + what it
+   includes (2–3 sentences):
+   - אימון טיפוס תחרותי (competitive climbing coaching)
+   - תוכניות אימון מרחוק (remote training plans)
+   - שיעורי טכניקה אישיים (one-on-one climbing technique sessions)
+   - פיזיותרפיה (physiotherapy)
+4. **Gallery** — 6–10 curated photos, optimized/compressed for fast load.
+5. **Contact (צור קשר)** — WhatsApp button (primary CTA, 050-772-1477 via
+   `wa.me/972507721477`), email link (palgitraining@gmail.com).
+6. **Footer** — Hebrew niqqud wordmark (פָּלְגִיטְּרֶיְנִינְג) as a secondary
+   brand element, minimal text.
+7. **Reserved for later (not built in v1):** testimonials section; athletes
+   area ("אזור מתאמנים") linking to Apps Script web apps and, eventually, a
+   login portal.
+
+## Visual design
+
+- **Dark theme**: both logo files are white-on-black JPGs (opaque background),
+  so the brand lives on dark surfaces. Dark background with white/light text,
+  accent color chosen during implementation to complement the photography.
+- Primary logo: `0PalgiTraining_newlogo_inverted.jpg` (climber silhouette in
+  circle). Secondary: Hebrew niqqud wordmark JPG.
+- Mobile-first layout; must also look right on desktop.
+
+## Content & assets
+
+- **Copy:** Claude drafts all Hebrew copy; Roei reviews and corrects every
+  section before launch. Roei's voice with parents/athletes wins over drafted
+  text.
+- **Photos:** source folder `/Users/tamooz/Photos for website` (14 photos +
+  2 logos as of 2026-07-10, mainly Roei and Roei-with-athletes). Claude
+  selects, resizes, and compresses into `assets/`. The set will change/grow
+  later — gallery must be trivial to update (drop in file, add one tag).
+
+## Privacy constraints
+
+- Athlete photos — especially minors — require parent permission before
+  publishing. v1 starts with photos of Roei / photos where athletes are not
+  identifiable, unless Roei confirms permission for specific images.
+- Publishing phone + email publicly was consciously approved by Roei
+  (2026-07-10).
+
+## Testing & launch gate
+
+- Check rendering at phone and desktop widths, RTL correctness, WhatsApp link
+  (`wa.me` deep link opens chat with correct number), email link, page weight
+  (target: fast load on cellular).
+- Roei sees a local/preview version and approves **before** the first public
+  push (first push = the site goes live).
+
+## Future phases (out of scope for v1)
+
+- Testimonials collection and section.
+- Athletes area: links to existing Apps Script tools (e.g., Wingate sign-up
+  web form) — zero new infrastructure.
+- Full athlete portal (login, personal plan view, session reporting) — separate
+  project with its own spec; would likely need a real backend (e.g., Firebase)
+  and does not constrain this static site.
+- Custom domain.
+- English version (only if international need appears).
