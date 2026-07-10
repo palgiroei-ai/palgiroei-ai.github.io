@@ -807,8 +807,8 @@ body { position: relative; }
 .sh-goal { color: #5f6368; font-size: 0.66rem; }
 
 .sh-band {
-  background: #f1ecfa;
-  color: #6d3fb0;
+  background: #1f1434;
+  color: #fff;
   font-weight: 700;
   border-radius: 4px;
   padding: 4px 8px;
@@ -820,10 +820,10 @@ body { position: relative; }
   grid-template-columns: auto 1fr auto;
   gap: 8px;
   align-items: center;
-  border: 1px solid #e8eaee;
+  border: 1px solid #eadfc8;
   border-radius: 4px;
   padding: 5px 8px;
-  background: #fff;
+  background: #f7efdf;
 }
 
 .sh-row b { font-size: 0.66rem; white-space: nowrap; }
@@ -831,7 +831,7 @@ body { position: relative; }
 
 .sh-row i {
   font-style: normal;
-  background: #eef0f4;
+  background: #fff;
   border-radius: 999px;
   padding: 1px 7px;
   font-size: 0.6rem;
@@ -883,31 +883,77 @@ body { position: relative; }
   box-shadow: 0 -1px 0 #e0e2e8 inset;
 }
 
-/* לוז week grid */
-.luz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
 
-.luz-head {
-  background: #eef0f4;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: 700;
-  padding: 3px 0;
-  font-size: 0.64rem;
-  margin-bottom: 6px;
-}
-
-.luz-head small { display: block; font-weight: 400; color: #5f6368; }
-
-.luz-cell {
-  border: 1px solid #e8eaee;
-  border-radius: 4px;
-  background: #fff;
-  padding: 4px 6px;
+/* Sheets: sets/reps table (Roei's real column structure) */
+.sh-table {
+  display: grid;
+  border: 1px solid #eadfc8;
+  border-radius: 6px;
+  overflow: hidden;
   font-size: 0.58rem;
-  color: #5f6368;
-  margin-bottom: 6px;
 }
 
-.luz-cell b { display: block; color: #202124; font-size: 0.6rem; }
-.luz-cell small { color: #9aa0a6; }
-.luz-cell.dim { opacity: 0.55; }
+.sh-table b {
+  background: #1f1434;
+  color: #fff;
+  font-weight: 600;
+  padding: 4px 6px;
+}
+
+.sh-table span {
+  background: #f7efdf;
+  padding: 4px 6px;
+  border-top: 1px solid #efe6d2;
+  color: #202124;
+}
+
+/* Sheets: weekly schedule strip (Iluz-style colors) */
+.sh-sched {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #e0d9ee;
+  border-radius: 6px;
+  overflow: hidden;
+  font-size: 0.6rem;
+  text-align: center;
+}
+
+.sh-sched b {
+  background: #1f1434;
+  color: #fff;
+  font-weight: 700;
+  padding: 3px 4px;
+}
+
+.sh-sched b small { display: block; font-weight: 400; opacity: 0.75; }
+
+.sh-sched span {
+  background: #f7efdf;
+  padding: 4px;
+  border-top: 1px solid #efe6d2;
+  min-height: 1.6em;
+  color: #202124;
+}
+
+.sh-sched i {
+  font-style: normal;
+  background: #d9d2e9;
+  padding: 3px 4px;
+  border-top: 1px solid #cec4e3;
+  color: #3f3457;
+}
+
+/* Sheets: lavender coach-notes row */
+.sh-lav {
+  background: #d9d2e9;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 0.62rem;
+  color: #3f3457;
+}
+
+/* Brighter outline on sheet windows (per Roei) */
+.device.sheet {
+  border-color: rgba(177,108,232,0.42);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.45), 0 0 24px rgba(177,108,232,0.14);
+}
