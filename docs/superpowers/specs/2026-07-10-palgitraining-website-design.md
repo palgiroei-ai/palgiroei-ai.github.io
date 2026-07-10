@@ -74,9 +74,8 @@ structure must not block that.
 
 ## Privacy constraints
 
-- Athlete photos — especially minors — require parent permission before
-  publishing. v1 starts with photos of Roei / photos where athletes are not
-  identifiable, unless Roei confirms permission for specific images.
+- Athlete photos: Roei confirmed (2026-07-10) that permission is in place for
+  all photos currently in the source folder — all may be used.
 - Publishing phone + email publicly was consciously approved by Roei
   (2026-07-10).
 
