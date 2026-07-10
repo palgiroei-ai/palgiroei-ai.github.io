@@ -776,3 +776,138 @@ body { position: relative; }
   .steps .step:nth-child(4) { --rd: 0.3s; }
   .steps .step:nth-child(5) { --rd: 0.4s; }
 }
+
+/* ===== Sheets-style mockups (mirror Roei's real files) ===== */
+.sheet-body {
+  background: #fbfbfd;
+  color: #202124;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  padding: 12px 12px 0;
+  display: grid;
+  gap: 7px;
+}
+
+.sh-head {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sh-head b {
+  background: #eef0f4;
+  border: 1px solid #e0e2e8;
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-weight: 700;
+  font-size: 0.68rem;
+}
+
+.sh-goal { color: #5f6368; font-size: 0.66rem; }
+
+.sh-band {
+  background: #f1ecfa;
+  color: #6d3fb0;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.66rem;
+}
+
+.sh-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #e8eaee;
+  border-radius: 4px;
+  padding: 5px 8px;
+  background: #fff;
+}
+
+.sh-row b { font-size: 0.66rem; white-space: nowrap; }
+.sh-row span { color: #5f6368; font-size: 0.62rem; }
+
+.sh-row i {
+  font-style: normal;
+  background: #eef0f4;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 0.6rem;
+  color: #444;
+  white-space: nowrap;
+}
+
+.sh-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+.sh-cell {
+  border: 1px solid #e8eaee;
+  border-radius: 4px;
+  background: #fff;
+  padding: 5px 8px;
+}
+
+.sh-cell u {
+  display: block;
+  text-decoration: none;
+  color: #5f6368;
+  font-size: 0.6rem;
+  margin-bottom: 2px;
+}
+
+.sh-cell b { font-size: 0.68rem; }
+
+.sh-stamp { color: #188038; font-size: 0.62rem; }
+
+.sheet-tabs {
+  display: flex;
+  gap: 2px;
+  border-top: 1px solid #e0e2e8;
+  background: #f1f3f6;
+  margin-inline: -12px;
+  padding: 4px 10px 5px;
+}
+
+.sheet-tabs b {
+  font-weight: 600;
+  font-size: 0.6rem;
+  color: #5f6368;
+  padding: 3px 10px;
+  border-radius: 5px 5px 0 0;
+}
+
+.sheet-tabs b.on {
+  background: #fff;
+  color: #188038;
+  box-shadow: 0 -1px 0 #e0e2e8 inset;
+}
+
+/* לוז week grid */
+.luz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+
+.luz-head {
+  background: #eef0f4;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 700;
+  padding: 3px 0;
+  font-size: 0.64rem;
+  margin-bottom: 6px;
+}
+
+.luz-head small { display: block; font-weight: 400; color: #5f6368; }
+
+.luz-cell {
+  border: 1px solid #e8eaee;
+  border-radius: 4px;
+  background: #fff;
+  padding: 4px 6px;
+  font-size: 0.58rem;
+  color: #5f6368;
+  margin-bottom: 6px;
+}
+
+.luz-cell b { display: block; color: #202124; font-size: 0.6rem; }
+.luz-cell small { color: #9aa0a6; }
+.luz-cell.dim { opacity: 0.55; }
