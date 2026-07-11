@@ -979,3 +979,6 @@ body { position: relative; }
 
 /* Crop from the top for portrait shots where the action is high in frame */
 .gallery-grid img.pos-top { object-position: center top; }
+
+/* Workflow CTA */
+.workflow-cta { text-align: center; margin-top: 40px; }
