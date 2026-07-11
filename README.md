@@ -24,7 +24,7 @@ ipconfig getifaddr en0        # give Roei http://<that-ip>:8080 (same Wi-Fi)
 
 ## Photos
 
-Source originals: `/Users/tamooz/Photos for website` (never modify).
+Source originals: `/Users/tamooz/claude-projects/Photos for website` (never modify).
 Process with `sips` into `assets/img/` (it also converts the `.jpg.avif`
 files). Weight: currently 2.6 MB total — keep near this; hero ≤ 450 KB.
 Permission confirmed by Roei (2026-07-10) for all current photos.

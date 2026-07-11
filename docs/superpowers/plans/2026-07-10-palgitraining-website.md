@@ -18,8 +18,8 @@
 - **Push = live site. NEVER `git push` without Roei's explicit approval** (standing deploy rule).
 - Page weight: all images combined ≤ 2.5 MB; hero image ≤ 450 KB.
 - Contact facts (exact values): WhatsApp `https://wa.me/972507721477`, email `palgitraining@gmail.com`.
-- Photo source folder (read-only — never modify originals): `/Users/tamooz/Photos for website`.
-- Repo root: `/Users/tamooz/palgiroei-ai.github.io`. All paths below are relative to it.
+- Photo source folder (read-only — never modify originals): `/Users/tamooz/claude-projects/Photos for website`.
+- Repo root: `/Users/tamooz/claude-projects/palgi-website`. All paths below are relative to it.
 
 ---
 
@@ -131,7 +131,7 @@ body {
 
 - [ ] **Step 4: Verify skeleton renders**
 
-Run: `cd /Users/tamooz/palgiroei-ai.github.io && python3 -m http.server 8080` (background), then `curl -s http://localhost:8080 | grep 'dir="rtl"'`
+Run: `cd /Users/tamooz/claude-projects/palgi-website && python3 -m http.server 8080` (background), then `curl -s http://localhost:8080 | grep 'dir="rtl"'`
 Expected: the `<html lang="he" dir="rtl">` line prints. Page loads with dark background (empty content is fine).
 
 - [ ] **Step 5: Commit**
@@ -150,22 +150,22 @@ git commit -m "feat: base scaffold — RTL skeleton, dark design tokens"
 - Create: `assets/img/hero.jpg` and `assets/img/gallery-01.jpg` … `gallery-NN.jpg` (6–10 photos)
 
 **Interfaces:**
-- Consumes: originals in `/Users/tamooz/Photos for website` (read-only).
+- Consumes: originals in `/Users/tamooz/claude-projects/Photos for website` (read-only).
 - Produces: exact paths `assets/logo.jpg`, `assets/wordmark.jpg`, `assets/favicon.png`, `assets/img/hero.jpg`, `assets/img/gallery-NN.jpg` — Tasks 3, 6, 7 reference these names verbatim.
 
 - [ ] **Step 1: Copy logos and make favicon**
 
 ```bash
-cd /Users/tamooz/palgiroei-ai.github.io
+cd /Users/tamooz/claude-projects/palgi-website
 mkdir -p assets/img
-cp '/Users/tamooz/Photos for website/0PalgiTraining_newlogo_inverted.jpg' assets/logo.jpg
-cp '/Users/tamooz/Photos for website/פָּלְגִיטְּרֶיְנִינְג.jpg' assets/wordmark.jpg
+cp '/Users/tamooz/claude-projects/Photos for website/0PalgiTraining_newlogo_inverted.jpg' assets/logo.jpg
+cp '/Users/tamooz/claude-projects/Photos for website/פָּלְגִיטְּרֶיְנִינְג.jpg' assets/wordmark.jpg
 sips -Z 180 -s format png assets/logo.jpg --out assets/favicon.png
 ```
 
 - [ ] **Step 2: View every photo and select**
 
-Open each of the 14 photos in `/Users/tamooz/Photos for website` with the Read tool. Selection criteria:
+Open each of the 14 photos in `/Users/tamooz/claude-projects/Photos for website` with the Read tool. Selection criteria:
 - **Hero (pick 1):** landscape orientation, high resolution (candidates by size: `DSC01642-Enhanced-NR.JPEG` 5499×3093, `BlocMastersQualis-2.jpg` 3600×2400, `AS4A0066/0887/0890/1459.JPEG` 3000×2000), dramatic, works with white text overlaid (darker/uncluttered top area preferred).
 - **Gallery (pick 6–10):** sharp, well-lit, shows Roei coaching or climbing / with athletes; mix of portrait and landscape is fine.
 Record the mapping (original → web name) in the commit message.
@@ -173,11 +173,11 @@ Record the mapping (original → web name) in the commit message.
 - [ ] **Step 3: Process selected photos**
 
 ```bash
-cd /Users/tamooz/palgiroei-ai.github.io
+cd /Users/tamooz/claude-projects/palgi-website
 # Hero: max 2200px on the long edge, quality 72
-sips -Z 2200 -s format jpeg -s formatOptions 72 '/Users/tamooz/Photos for website/<HERO_ORIGINAL>' --out assets/img/hero.jpg
+sips -Z 2200 -s format jpeg -s formatOptions 72 '/Users/tamooz/claude-projects/Photos for website/<HERO_ORIGINAL>' --out assets/img/hero.jpg
 # Each gallery pick: max 1400px, quality 72 (repeat per photo, numbering 01, 02, ...)
-sips -Z 1400 -s format jpeg -s formatOptions 72 '/Users/tamooz/Photos for website/<ORIGINAL>' --out assets/img/gallery-01.jpg
+sips -Z 1400 -s format jpeg -s formatOptions 72 '/Users/tamooz/claude-projects/Photos for website/<ORIGINAL>' --out assets/img/gallery-01.jpg
 ```
 
 - [ ] **Step 4: Verify page-weight budget**
@@ -595,7 +595,7 @@ git add -A && git commit -m "polish: quality pass fixes"
 - [ ] **Step 1: Create the GitHub repo**
 
 ```bash
-cd /Users/tamooz/palgiroei-ai.github.io
+cd /Users/tamooz/claude-projects/palgi-website
 gh repo create palgiroei-ai/palgiroei-ai.github.io --public --source . --remote origin
 ```
 

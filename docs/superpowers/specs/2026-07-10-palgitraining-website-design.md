@@ -71,7 +71,7 @@ structure must not block that.
 - **Copy:** Claude drafts all Hebrew copy; Roei reviews and corrects every
   section before launch. Roei's voice with parents/athletes wins over drafted
   text.
-- **Photos:** source folder `/Users/tamooz/Photos for website` (14 photos +
+- **Photos:** source folder `/Users/tamooz/claude-projects/Photos for website` (14 photos +
   2 logos as of 2026-07-10, mainly Roei and Roei-with-athletes). Claude
   selects, resizes, and compresses into `assets/`. The set will change/grow
   later — gallery must be trivial to update (drop in file, add one tag).
