@@ -250,6 +250,7 @@ if (gBoard) {
     dir = 1;
     scoreEl.textContent = '0';
     shareEl.hidden = true;
+    lbForm.hidden = true;
     climberEl.classList.remove('fall');
     rungsEl.style.transform = 'none';
     grabBtn.textContent = 'קמפסו!';
@@ -267,6 +268,11 @@ if (gBoard) {
       bestEl.textContent = best;
       try { localStorage.setItem('campusBest', String(best)); } catch (e) {}
       markBest();
+    }
+    if (qualifies(score)) {
+      submitted = false;
+      try { lbName.value = localStorage.getItem('campusName') || ''; } catch (err) {}
+      lbForm.hidden = false;
     }
     if (score > 0) {
       shareEl.href = 'https://wa.me/?text=' + encodeURIComponent(
@@ -301,6 +307,62 @@ if (gBoard) {
   // idle state: centered marker + visible zone before first game
   markerEl.style.left = 'calc(50% - 2px)';
   placeZone();
+
+  // --- Leaderboard (Apps Script backend; hidden gracefully if unreachable) ---
+  const LB_URL = 'https://script.google.com/macros/s/AKfycbwKQK041klhDxZRldOw-AOWzenQt0LESlrUsthqI6MJnDRsGZx7s6b30wf0p05sZkfR/exec';
+  const lbBox = document.getElementById('lb');
+  const lbList = document.getElementById('lb-list');
+  const lbForm = document.getElementById('lb-form');
+  const lbName = document.getElementById('lb-name');
+  let lbData = null;
+  let submitted = false;
+
+  const renderLB = (rows) => {
+    lbData = rows;
+    lbList.innerHTML = '';
+    if (!rows.length) {
+      lbList.innerHTML = '<p class="lb-empty">עדיין אין שיאים — תהיו הראשונים!</p>';
+    } else {
+      rows.forEach((r) => {
+        const li = document.createElement('li');
+        const b = document.createElement('b');
+        b.textContent = r.n;
+        const sp = document.createElement('span');
+        sp.textContent = r.s;
+        li.append(b, sp);
+        lbList.appendChild(li);
+      });
+    }
+    lbBox.hidden = false;
+  };
+
+  const loadLB = () => {
+    fetch(LB_URL).then((r) => r.json()).then(renderLB).catch(() => { lbBox.hidden = true; });
+  };
+  loadLB();
+
+  const qualifies = (s) =>
+    lbData !== null && s >= 1 && (lbData.length < 10 || s > lbData[lbData.length - 1].s);
+
+  lbForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = lbName.value.trim().slice(0, 12);
+    if (!name || submitted) return;
+    submitted = true;
+    lbForm.querySelector('button').textContent = 'שולח…';
+    try { localStorage.setItem('campusName', name); } catch (err) {}
+    fetch(LB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ name: name, score: score })
+    }).then((r) => r.json()).then(() => {
+      lbForm.hidden = true;
+      lbForm.querySelector('button').textContent = 'שלחו לטבלת השיאים';
+      loadLB();
+    }).catch(() => {
+      lbForm.hidden = true;
+    });
+  });
 
   grabBtn.addEventListener('click', grab);
   gBoard.addEventListener('pointerdown', grab);
