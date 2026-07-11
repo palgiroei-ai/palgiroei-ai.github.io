@@ -4,7 +4,7 @@
  * Moderation: delete rows in the Scores sheet — that's it.
  */
 const SHEET_ID = '1llQY_JyzpyeRG2cVkqL0FtYZWuzitzkds_DCQGk8-44';
-const TOP_N = 10;
+const TOP_N = 5;
 const MAX_SCORE = 60;
 const MAX_NAME = 12;
 const MAX_ROWS = 5000;

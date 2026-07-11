@@ -317,13 +317,36 @@ if (gBoard) {
   let lbData = null;
   let submitted = false;
 
+  const lbPodium = document.getElementById('lb-podium');
+
   const renderLB = (rows) => {
+    rows = rows.slice(0, 5);
     lbData = rows;
+    lbPodium.innerHTML = '';
     lbList.innerHTML = '';
     if (!rows.length) {
       lbList.innerHTML = '<p class="lb-empty">עדיין אין שיאים — תהיו הראשונים!</p>';
     } else {
-      rows.forEach((r) => {
+      const medals = ['🥇', '🥈', '🥉'];
+      const podiumRows = rows.slice(0, 3);
+      // visual order on the podium: 2nd, 1st, 3rd
+      [1, 0, 2].forEach((idx) => {
+        if (!podiumRows[idx]) return;
+        const r = podiumRows[idx];
+        const d = document.createElement('div');
+        d.className = 'pod p' + (idx + 1);
+        const em = document.createElement('em');
+        em.textContent = medals[idx];
+        const b = document.createElement('b');
+        b.textContent = r.n;
+        const sp = document.createElement('span');
+        sp.textContent = r.s + ' שלבים';
+        const bar = document.createElement('i');
+        bar.textContent = idx + 1;
+        d.append(em, b, sp, bar);
+        lbPodium.appendChild(d);
+      });
+      rows.slice(3).forEach((r) => {
         const li = document.createElement('li');
         const b = document.createElement('b');
         b.textContent = r.n;
@@ -342,7 +365,7 @@ if (gBoard) {
   loadLB();
 
   const qualifies = (s) =>
-    lbData !== null && s >= 1 && (lbData.length < 10 || s > lbData[lbData.length - 1].s);
+    lbData !== null && s >= 1 && (lbData.length < 5 || s > lbData[lbData.length - 1].s);
 
   lbForm.addEventListener('submit', (e) => {
     e.preventDefault();
