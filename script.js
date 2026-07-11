@@ -280,7 +280,7 @@ if (gBoard) {
         return;
       }
       speed = Math.min(2.6, speed * 1.07);
-      zoneW = Math.max(0.11, zoneW * 0.93);
+      zoneW = Math.max(0.03, zoneW * 0.88);
       placeZone();
     } else {
       gameOver();
