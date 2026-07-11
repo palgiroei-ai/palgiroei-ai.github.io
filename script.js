@@ -359,9 +359,20 @@ if (gBoard) {
     lbBox.hidden = false;
   };
 
-  const loadLB = () => {
-    fetch(LB_URL).then((r) => r.json()).then(renderLB).catch(() => { lbBox.hidden = true; });
+  const loadLB = (attempt) => {
+    attempt = attempt || 0;
+    fetch(LB_URL).then((r) => r.json()).then((rows) => {
+      renderLB(rows);
+      try { localStorage.setItem('campusLB', JSON.stringify(rows)); } catch (err) {}
+    }).catch(() => {
+      if (attempt < 3) setTimeout(() => loadLB(attempt + 1), 1500 * (attempt + 1));
+    });
   };
+  // show last known board instantly, then refresh from network
+  try {
+    const cached = JSON.parse(localStorage.getItem('campusLB') || 'null');
+    if (cached) renderLB(cached);
+  } catch (err) {}
   loadLB();
 
   const qualifies = (s) =>
