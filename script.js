@@ -198,12 +198,22 @@ if (gBoard) {
     const r = document.createElement('div');
     r.className = 'rung';
     r.style.bottom = (90 + i * STEP) + 'px';
+    r.innerHTML = '<span>' + (i + 1) + '</span><span>' + (i + 1) + '</span>';
     rungsEl.appendChild(r);
   }
 
   let best = 0;
   try { best = parseInt(localStorage.getItem('campusBest'), 10) || 0; } catch (e) {}
   bestEl.textContent = best;
+
+  const markBest = () => {
+    const prev = rungsEl.querySelector('.rung.best');
+    if (prev) prev.classList.remove('best');
+    if (best > 0 && rungsEl.children[best - 1]) {
+      rungsEl.children[best - 1].classList.add('best');
+    }
+  };
+  markBest();
 
   let playing = false;
   let score = 0;
@@ -256,6 +266,7 @@ if (gBoard) {
       best = score;
       bestEl.textContent = best;
       try { localStorage.setItem('campusBest', String(best)); } catch (e) {}
+      markBest();
     }
     if (score > 0) {
       shareEl.href = 'https://wa.me/?text=' + encodeURIComponent(

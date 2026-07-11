@@ -1073,3 +1073,29 @@ body { position: relative; }
 }
 
 .g-share { font-size: 0.9rem; }
+
+/* Rung numbers — engraved into the wood, both ends */
+.rung {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 7px;
+}
+
+.rung span {
+  font-size: 9px;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  line-height: 1;
+  color: rgba(88, 66, 28, 0.55);
+  text-shadow: 0 1px 0 rgba(255, 250, 235, 0.5);
+  user-select: none;
+}
+
+/* Personal-best rung */
+.rung.best { outline: 2px solid rgba(177, 108, 232, 0.6); outline-offset: 1px; }
+
+.rung.best span {
+  color: var(--accent);
+  text-shadow: 0 0 7px rgba(177, 108, 232, 0.9);
+}
