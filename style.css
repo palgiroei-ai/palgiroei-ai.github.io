@@ -1154,3 +1154,5 @@ body { position: relative; }
 }
 
 .lb-form input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+.lb-form[hidden], .lb[hidden] { display: none; }
