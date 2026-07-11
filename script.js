@@ -178,3 +178,126 @@ if (counters.length && !reduceMotion) {
   }, { threshold: 0.5 });
   counters.forEach((s) => cio.observe(s));
 }
+
+// --- Campus Climber game ---
+const gBoard = document.getElementById('board');
+if (gBoard) {
+  const rungsEl = document.getElementById('rungs');
+  const climberEl = document.getElementById('climber');
+  const markerEl = document.getElementById('g-marker');
+  const zoneEl = document.getElementById('g-zone');
+  const grabBtn = document.getElementById('g-grab');
+  const scoreEl = document.getElementById('g-score');
+  const bestEl = document.getElementById('g-best');
+  const shareEl = document.getElementById('g-share');
+  const timingEl = document.getElementById('timing');
+
+  const STEP = 56;
+  const MAX_SCORE = 60;
+  for (let i = 0; i < MAX_SCORE + 8; i++) {
+    const r = document.createElement('div');
+    r.className = 'rung';
+    r.style.bottom = (90 + i * STEP) + 'px';
+    rungsEl.appendChild(r);
+  }
+
+  let best = 0;
+  try { best = parseInt(localStorage.getItem('campusBest'), 10) || 0; } catch (e) {}
+  bestEl.textContent = best;
+
+  let playing = false;
+  let score = 0;
+  let pos = 0.5;
+  let dir = 1;
+  let speed = 0.9;          // track widths per second
+  let zoneW = 0.32;
+  let zoneC = 0.5;
+  let lastT = 0;
+
+  const placeZone = () => {
+    zoneC = 0.18 + Math.random() * 0.64;
+    zoneEl.style.left = ((zoneC - zoneW / 2) * 100) + '%';
+    zoneEl.style.width = (zoneW * 100) + '%';
+  };
+
+  const tickGame = (now) => {
+    if (!playing) return;
+    const dt = Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+    pos += dir * speed * dt;
+    if (pos >= 1) { pos = 1; dir = -1; }
+    if (pos <= 0) { pos = 0; dir = 1; }
+    markerEl.style.left = 'calc(' + (pos * 100) + '% - 2px)';
+    requestAnimationFrame(tickGame);
+  };
+
+  const start = () => {
+    playing = true;
+    score = 0;
+    speed = 0.9;
+    zoneW = 0.32;
+    pos = 0.5;
+    dir = 1;
+    scoreEl.textContent = '0';
+    shareEl.hidden = true;
+    climberEl.classList.remove('fall');
+    rungsEl.style.transform = 'none';
+    grabBtn.textContent = 'תפסו את השלב!';
+    placeZone();
+    lastT = performance.now();
+    requestAnimationFrame(tickGame);
+  };
+
+  const gameOver = () => {
+    playing = false;
+    climberEl.classList.add('fall');
+    grabBtn.textContent = 'עוד ניסיון!';
+    if (score > best) {
+      best = score;
+      bestEl.textContent = best;
+      try { localStorage.setItem('campusBest', String(best)); } catch (e) {}
+    }
+    if (score > 0) {
+      shareEl.href = 'https://wa.me/?text=' + encodeURIComponent(
+        'טיפסתי ' + score + ' שלבים בקמפוס קליימבר של PalgiTraining 🧗 נסו לעבור אותי: https://palgiroei-ai.github.io'
+      );
+      shareEl.hidden = false;
+    }
+  };
+
+  const grab = () => {
+    if (!playing) { start(); return; }
+    if (Math.abs(pos - zoneC) <= zoneW / 2) {
+      score++;
+      scoreEl.textContent = score;
+      climberEl.classList.remove('hop');
+      void climberEl.offsetWidth;
+      climberEl.classList.add('hop');
+      rungsEl.style.transform = 'translateY(' + (score * STEP) + 'px)';
+      if (score >= MAX_SCORE) {
+        grabBtn.textContent = 'הגעתם לפסגה! 🏔️';
+        gameOver();
+        return;
+      }
+      speed = Math.min(2.6, speed * 1.07);
+      zoneW = Math.max(0.11, zoneW * 0.93);
+      placeZone();
+    } else {
+      gameOver();
+    }
+  };
+
+  // idle state: centered marker + visible zone before first game
+  markerEl.style.left = 'calc(50% - 2px)';
+  placeZone();
+
+  grabBtn.addEventListener('click', grab);
+  gBoard.addEventListener('pointerdown', grab);
+  timingEl.addEventListener('pointerdown', grab);
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && gBoard.getBoundingClientRect().top < window.innerHeight) {
+      e.preventDefault();
+      grab();
+    }
+  });
+}
