@@ -17,3 +17,7 @@
   `services-app-mockups`.
 - style.css/script.js are linked with `?v=N` — bump N in index.html on every
   deploy that changes either file (prevents stale-cache mismatches).
+- Leaderboard backend (leaderboard/): NEVER `clasp deploy` over the web-app
+  deployment — it strips the entry point (site gets 404). Code updates:
+  `clasp push`, then ROEI redeploys from the editor (Manage deployments →
+  edit → new version; URL stays).
