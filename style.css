@@ -1093,9 +1093,9 @@ body { position: relative; }
 }
 
 /* Personal-best rung */
-.rung.best { outline: 2px solid rgba(177, 108, 232, 0.6); outline-offset: 1px; }
+.rung.best { outline: 2px solid rgba(109, 63, 176, 0.85); outline-offset: 1px; }
 
 .rung.best span {
-  color: var(--accent);
-  text-shadow: 0 0 7px rgba(177, 108, 232, 0.9);
+  color: #6d3fb0;
+  text-shadow: 0 0 6px rgba(109, 63, 176, 0.7);
 }
