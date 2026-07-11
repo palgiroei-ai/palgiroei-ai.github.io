@@ -242,7 +242,7 @@ if (gBoard) {
     shareEl.hidden = true;
     climberEl.classList.remove('fall');
     rungsEl.style.transform = 'none';
-    grabBtn.textContent = 'תפסו את השלב!';
+    grabBtn.textContent = 'קמפסו!';
     placeZone();
     lastT = performance.now();
     requestAnimationFrame(tickGame);
