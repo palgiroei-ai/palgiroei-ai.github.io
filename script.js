@@ -309,7 +309,7 @@ if (gBoard) {
   placeZone();
 
   // --- Leaderboard (Apps Script backend; hidden gracefully if unreachable) ---
-  const LB_URL = 'https://script.google.com/macros/s/AKfycbzzdxt7sktQoHyOUja91lpYbzVIZbn2skj5y3sdLZKq9MA_CTTlVA1AmUteEd_01_1d/exec';
+  const LB_URL = 'https://script.google.com/macros/s/AKfycbzRw4u0kMcp4TcqFF5OHhuPnjVt7pgqv4viHNxm-p8BOiH198me1ESF7G06RXk794bs/exec';
   const lbBox = document.getElementById('lb');
   const lbList = document.getElementById('lb-list');
   const lbForm = document.getElementById('lb-form');
