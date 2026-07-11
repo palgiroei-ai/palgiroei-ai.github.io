@@ -15,3 +15,5 @@
   #f7efdf / #d9d2e9), data always fictional; never invent metrics. Reference
   files via gws (re-auth needed every ~7 days). Variant A on branch
   `services-app-mockups`.
+- style.css/script.js are linked with `?v=N` — bump N in index.html on every
+  deploy that changes either file (prevents stale-cache mismatches).
