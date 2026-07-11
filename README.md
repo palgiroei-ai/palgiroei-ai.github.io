@@ -48,3 +48,13 @@ query in index.html — phones cache aggressively.**
 Spec: `docs/superpowers/specs/2026-07-10-palgitraining-website-design.md`
 Plan: `docs/superpowers/plans/2026-07-10-palgitraining-website.md`
 Future phases (testimonials, athletes area, portal, domain) are in the spec.
+
+## Campus Climber game + live leaderboard
+
+Game section (`#game`) between workflow and gallery. Leaderboard backend:
+`leaderboard/` — standalone Apps Script web app; the **"Campus Climber
+Leaderboard" Sheet in Roei's Drive is the moderation panel** (delete a row =
+remove a score). Code updates: `clasp push`, then **Roei redeploys from the
+editor** (Manage deployments → edit → new version) — a CLI `clasp deploy`
+over the web-app deployment breaks its URL. After any deploy of the site,
+browsers may serve the old page for up to ~10 minutes (GitHub Pages cache).

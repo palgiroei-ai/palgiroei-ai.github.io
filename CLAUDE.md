@@ -21,3 +21,5 @@
   deployment — it strips the entry point (site gets 404). Code updates:
   `clasp push`, then ROEI redeploys from the editor (Manage deployments →
   edit → new version; URL stays).
+- After every site deploy there is a ~10-min stale-cache window (old
+  index.html may still be served) — don't chase "bugs" reported inside it.

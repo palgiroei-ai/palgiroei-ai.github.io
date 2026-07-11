@@ -115,3 +115,17 @@ Supersedes the "Services" bullet in Page structure:
 - New section after services: "כך נראה תהליך העבודה" — 5 steps with icons.
 - Gallery renamed "גלריה", 9 photos.
 - Instagram (instagram.com/palgi.roei) in contact + footer.
+
+## Revision — 2026-07-11 (game + leaderboard, shipped)
+
+- Campus Climber mini-game (#game, between workflow and gallery): timing-bar
+  game, logo badge climbs a campus board with engraved rung numbers;
+  personal-best rung highlighted (#6d3fb0); difficulty tuned by Roei
+  (zone ×0.88/step, floor 3%); WhatsApp score share; summit cap 60.
+- Live top-5 leaderboard with podium (2-1-3 medal blocks): Apps Script web
+  app (leaderboard/) + "Campus Climber Leaderboard" Sheet as moderation
+  panel; fetch retries ×3 + localStorage board cache; submit form only on
+  qualifying score. Historical seeds: ישי 13, אורכה 12, לוטם 11.
+- Stats updates: שנות אימון תחרותי (70+ ספורטאיות וספורטאי הישג),
+  משלחות 40+. Workflow step 4 "הכנה לרגע האמת" + WhatsApp CTA.
+- css/js links carry ?v=N (now v=5) — bump on every deploy touching them.
