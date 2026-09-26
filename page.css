@@ -1,0 +1,421 @@
+/* PalgiTraining scroll demo. Page-local styles only: the engine's
+   .sc-stage / [data-sc-*] rules are the mechanism and stay untouched. */
+
+:root {
+  /* the live site's palette: purple-black ground, lilac accent */
+  --sc-canvas:     #0e0b12;
+  --sc-surface:    #1a1522;
+  --sc-ink:        #f4f2f6;
+  --sc-ink-soft:   #b3acbd;
+  --sc-accent:     #b16ce8;
+  --sc-accent-ink: #170e20;
+  --sc-font-display: "Heebo", system-ui, sans-serif;
+  --sc-font-text:    "Heebo", system-ui, sans-serif;
+  --sc-shadow-color: 275 30% 3%;
+
+  /* the hand on the rung, as a fraction of the campus photo */
+  --hand-x: 63.6%;
+  --hand-y: 9.5%;
+}
+
+body { line-height: 1.7; letter-spacing: 0; }
+[data-sc-progress] { transform-origin: 100% 50%; }
+
+/* ---------------------------------------------------------------- type -- */
+.h2 {
+  font-family: var(--sc-font-display);
+  font-weight: 800;
+  font-size: var(--sc-t-2xl);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 0;
+}
+.h2--xl { font-size: var(--sc-t-3xl); }
+/* the live site's heading mark: a short accent bar under section titles */
+.h2:not(.h2--xl)::after {
+  content: ""; display: block; width: 56px; height: 4px; margin-top: var(--sc-3);
+  border-radius: 2px; background: var(--sc-accent);
+}
+.body {
+  color: var(--sc-ink-soft);
+  font-size: var(--sc-t-base);
+  max-width: 58ch;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+/* ----------------------------------------------------------------- bar -- */
+.bar {
+  position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--sc-4) var(--sc-gutter);
+  pointer-events: none;
+}
+.bar > * { pointer-events: auto; }
+/* a soft band so copy scrolling under the bar never collides with the mark */
+.bar::before {
+  content: ""; position: absolute; inset: 0 0 -1.5rem 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, color-mix(in oklab, var(--sc-canvas) 88%, transparent) 40%, transparent);
+}
+.bar__mark img { width: clamp(7rem, 11vw, 9.5rem); height: auto; }
+/* buttons are campus-board rungs: near-square ends, a bolt at each end,
+   a lit top lip, and a small lift when you reach for one */
+.rung {
+  position: relative; display: flex; align-items: center; justify-content: center; gap: var(--sc-3);
+  width: min(21rem, 100%); min-height: 3.5rem; padding: 0 var(--sc-7);
+  border-radius: 6px; text-decoration: none; white-space: nowrap;
+  font-weight: 700; font-size: var(--sc-t-lg);
+  color: var(--sc-ink); background: linear-gradient(to bottom, #241c30, #1a1522);
+  border: 1px solid color-mix(in oklab, var(--sc-accent) 30%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10), 0 1px 0 rgb(0 0 0 / 0.5), var(--sc-e2);
+  transition: transform 160ms var(--sc-ease-out), box-shadow 160ms var(--sc-ease-out);
+}
+.rung::before, .rung::after {
+  content: ""; position: absolute; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+  background: color-mix(in oklab, currentColor 45%, transparent); box-shadow: inset 0 1px 1px rgb(0 0 0 / 0.4);
+}
+.rung::before { right: 1rem; } .rung::after { left: 1rem; }
+.rung--main {
+  color: var(--sc-accent-ink); border-color: transparent;
+  background: linear-gradient(to bottom, #c38af0, var(--sc-accent));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 1px 0 rgb(0 0 0 / 0.4), var(--sc-e2);
+}
+.rung:active { transform: translateY(1px); }
+@media (hover: hover) and (pointer: fine) {
+  .rung:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), var(--sc-e3); }
+}
+.rung__ico { width: 1.25em; height: 1.25em; flex: none; }
+.rung--sm { width: auto; min-height: 2.75rem; padding: 0 2.2rem; font-size: var(--sc-t-sm); }
+.rung--sm::before { right: 0.75rem; } .rung--sm::after { left: 0.75rem; }
+.rungs { display: flex; flex-direction: column; align-items: center; gap: var(--sc-3); margin-top: var(--sc-6) !important; }
+
+/* ---------------------------------------------------------------- hero -- */
+.hero__stage { background: var(--sc-canvas); }
+/* one warm overhead light on the wall, the rest of the room falls away */
+.hero__light {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(60vmax 70vmax at 26% 30%,
+    color-mix(in oklab, #d9b98a 12%, transparent), transparent 70%);
+}
+/* the room gets the live site's aurora; the warm light stays on the wall */
+.aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  /* the glow thins out before the stage's bottom edge, so it never ends in a line */
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 35%); mask-image: linear-gradient(to top, transparent 0%, #000 35%); }
+.aurora::before, .aurora::after {
+  content: ""; position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; opacity: 0.2;
+}
+.aurora::before { right: -22vmax; top: -30vmax; background: radial-gradient(circle, #7b2ff7 0%, transparent 62%); }
+.aurora::after  { right: 8vmax; bottom: -40vmax; background: radial-gradient(circle, #d16ba5 0%, transparent 62%); opacity: 0.14; }
+@media (prefers-reduced-motion: no-preference) {
+  .aurora::before { animation: drift1 28s ease-in-out infinite alternate; }
+  .aurora::after  { animation: drift2 34s ease-in-out infinite alternate; }
+}
+@keyframes drift1 { to { transform: translate3d(-8vmax, 6vmax, 0); } }
+@keyframes drift2 { to { transform: translate3d(6vmax, -5vmax, 0); } }
+.hero__scene {
+  --p: min(calc(var(--sc-p, 0) / 0.55), 1);
+  --fade: clamp(0, calc((var(--sc-p, 0) - 0.48) / 0.14), 1);
+  opacity: calc(1 - var(--fade));
+  position: absolute; z-index: 1;
+  height: 102svh; aspect-ratio: 925 / 1400;
+  left: -1vw; top: -3svh;
+  transform-origin: var(--hand-x) var(--hand-y);
+  /* shared camera: both planes travel together so the hand never leaves its rung */
+  transform: translate3d(calc(var(--p) * 6vw), calc(var(--p) * -3svh), 0);
+}
+.hero__scene img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+  transform-origin: var(--hand-x) var(--hand-y);
+}
+.hero__wall {
+  transform: scale(calc(1 + var(--p) * 0.05));
+  /* both side edges fade into the room: the camera drifts right as you scroll,
+     so the left edge comes into view and must never read as a cut */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 62%, transparent 99%), linear-gradient(to top, transparent 0%, #000 18%);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to right, transparent 0%, #000 16%, #000 62%, transparent 99%), linear-gradient(to top, transparent 0%, #000 18%);
+          mask-composite: intersect;
+  filter: brightness(0.92) contrast(1.04);
+}
+.hero__scene--front { z-index: 3; }
+.hero__climber {
+  transform: scale(calc(1 + var(--p) * 0.13)) rotate(calc(var(--p) * -4deg));
+  filter: drop-shadow(-1.2rem 1.6rem 1.4rem rgb(20 12 4 / 0.35));
+}
+.hero__scrim { display: none; }
+
+/* the handoff: the coach rises where the climber was, then the next title */
+.hero__coach {
+  --k: clamp(0, calc((var(--sc-p, 0) - 0.58) / 0.2), 1);
+  /* the same frame the wall ends in (scene box plus its full camera drift),
+     with the same soft edges, so the coach replaces the climber in place */
+  position: absolute; z-index: 2; margin: 0;
+  left: 5vw; top: -6svh; height: 102svh; aspect-ratio: 960 / 1400;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 70%, transparent 99%), linear-gradient(to top, transparent 0%, #000 18%);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to right, transparent 0%, #000 14%, #000 70%, transparent 99%), linear-gradient(to top, transparent 0%, #000 18%);
+          mask-composite: intersect;
+  opacity: var(--k);
+  transform: translate3d(0, calc((1 - var(--k)) * 5svh), 0);
+}
+.hero__coach img { width: 100%; height: 100%; object-fit: cover; max-width: none; }
+.hero__next {
+  --k: clamp(0, calc((var(--sc-p, 0) - 0.76) / 0.14), 1);
+  position: absolute; z-index: 7;
+  right: max(var(--sc-gutter), calc((100vw - var(--sc-maxw)) / 2 + var(--sc-gutter)));
+  bottom: 7svh; width: min(36rem, 50vw);
+  opacity: var(--k);
+}
+/* the title rises out of a mask, the way the line reaches a hold */
+.hero__next-title > span { display: block; overflow: hidden; padding-bottom: 0.14em; }
+.hero__next-title { font-size: var(--sc-t-3xl); }
+.hero__next-title > span { transform: translate3d(0, calc((1 - var(--k)) * 0.9em), 0); }
+
+.hero__name-wrap {
+  position: absolute; z-index: 2;
+  right: var(--sc-gutter); top: 30svh;
+  transform: translate3d(0, calc(var(--sc-p, 0) * -5svh), 0);
+}
+.hero__name {
+  font-weight: 800;
+  font-size: clamp(3.6rem, 9.4vw, 9.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin: 0;
+  white-space: nowrap;
+}
+.hero__copy {
+  position: absolute; z-index: 4;
+  right: var(--sc-gutter); top: calc(30svh + clamp(4.4rem, 11.4vw, 11.5rem));
+  width: min(30rem, 40vw);
+}
+.hero__role { margin: 0; font-size: var(--sc-t-xl); font-weight: 700; line-height: 1.25; }
+.hero__sub { margin: var(--sc-3) 0 0; color: var(--sc-ink-soft); font-size: var(--sc-t-lg); line-height: 1.5; max-width: 30ch; }
+.hero__motes { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; }
+/* the section floor: every plane fades into the ground before the stage's
+   bottom edge, so the pin releasing never shows a hard clip line */
+.hero__floor {
+  position: absolute; inset: auto 0 0 0; height: 28svh; z-index: 6; pointer-events: none;
+  opacity: calc(1 - clamp(0, calc((var(--sc-p, 0) - 0.5) / 0.15), 1));
+  background: linear-gradient(to top, var(--sc-canvas) 0%, color-mix(in oklab, var(--sc-canvas) 70%, transparent) 38%, transparent 100%);
+}
+
+@media (max-width: 860px) {
+  /* phone: the wall fills the frame, the climber is centred on the hand, the
+     type sits ABOVE the subject on a band at the bottom */
+  .hero__scene { height: 100svh; left: 50%; top: 0; margin-left: calc(-1 * 0.6 * 100svh * 925 / 1400);
+    transform: translate3d(0, calc(var(--p) * -3svh), 0); }
+  .hero__wall { -webkit-mask-image: none; mask-image: none; }
+  .hero__climber { transform: scale(calc(1 + var(--p) * 0.1)) rotate(calc(var(--p) * -3deg)); }
+  .hero__floor { display: none; }
+  .hero__coach { left: 50%; top: 0; height: 100svh; margin-left: calc(-0.52 * 100svh * 960 / 1400);
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 22%); mask-image: linear-gradient(to top, transparent 0%, #000 22%); }
+  .hero__next { left: var(--sc-gutter); right: var(--sc-gutter); width: auto; bottom: 6svh; }
+  .hero__next-title { font-size: var(--sc-t-2xl); }
+  .hero__scrim {
+    display: block; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background:
+      linear-gradient(to bottom, color-mix(in oklab, var(--sc-canvas) 62%, transparent) 0%, transparent 13%),
+      linear-gradient(to top, color-mix(in oklab, var(--sc-canvas) 96%, transparent) 0%,
+      color-mix(in oklab, var(--sc-canvas) 86%, transparent) max(30%, 17rem), transparent max(56%, 25rem));
+  }
+  .hero__name-wrap { z-index: 5; right: var(--sc-gutter); left: var(--sc-gutter); top: auto; bottom: calc(10.5rem + 6svh); }
+  .hero__name { font-size: clamp(3rem, 16vw, 4.6rem); }
+  .hero__copy { z-index: 5; top: auto; bottom: 6svh; width: auto; left: var(--sc-gutter); }
+  .hero__role { font-size: var(--sc-t-lg); }
+  .hero__sub { font-size: var(--sc-t-base); }
+}
+
+/* ----------------------------------------------------------------- who -- */
+.who { padding: var(--sc-5) var(--sc-gutter) var(--sc-section); max-width: var(--sc-maxw); margin-inline: auto; }
+.who__grid { width: min(36rem, 100%); }
+.who__text > * + * { margin-top: var(--sc-4); }
+
+.ledger { margin: clamp(3.5rem, 8vw, 7rem) 0 0; max-width: 52rem; }
+.ledger__row {
+  display: grid; grid-template-columns: 9rem 1fr; gap: var(--sc-5); align-items: baseline;
+  padding-block: var(--sc-4);
+  border-top: 1px solid var(--sc-hairline);
+}
+.ledger__row:last-child { border-bottom: 1px solid var(--sc-hairline); }
+.ledger__num {
+  font-weight: 800; font-size: var(--sc-t-3xl); line-height: 1; letter-spacing: -0.02em;
+  color: var(--sc-accent); direction: ltr; text-align: right; font-variant-numeric: tabular-nums;
+}
+.ledger__num { transform-origin: 100% 70%; }
+/* the live site's count-up, plus a small landing bounce, like catching a hold */
+.ledger__num.is-waiting { opacity: 0.35; }
+.ledger__num.is-popping { animation: pop 900ms var(--sc-ease-out) both; }
+@keyframes pop {
+  0%   { opacity: 0.35; transform: translateY(0.5rem) scale(0.78); }
+  55%  { opacity: 1;    transform: translateY(-0.2rem) scale(1.1); }
+  78%  { transform: translateY(0) scale(0.97); }
+  100% { opacity: 1;    transform: none; }
+}
+.ledger dd { margin: 0; display: flex; flex-wrap: wrap; column-gap: var(--sc-4); align-items: baseline; }
+.ledger dd strong { font-size: var(--sc-t-lg); font-weight: 700; }
+.ledger dd span { color: var(--sc-ink-soft); }
+
+@media (max-width: 860px) {
+  .ledger__row { grid-template-columns: 5.5rem 1fr; gap: var(--sc-4); }
+  .ledger__num { font-size: var(--sc-t-2xl); }
+}
+
+/* ------------------------------------------------------------ services -- */
+.svc__stage { display: flex; align-items: center; }
+.svc__rail {
+  --over: 0px;
+  position: absolute; right: 0; top: 50%;
+  display: flex; gap: clamp(1.25rem, 3vw, 2.75rem);
+  width: max-content;
+  padding-inline: var(--sc-gutter);
+  /* RTL: the rail starts flush right and travels RIGHTWARD, so the next item
+     always arrives from the left, the way Hebrew is read */
+  transform: translate3d(calc(var(--sc-p, 0) * var(--over)), -50%, 0);
+  will-change: transform;
+}
+.svc__lead { width: min(24rem, 78vw); align-self: center; }
+.svc__lead > * + * { margin-top: var(--sc-4); }
+.svc__item {
+  width: clamp(16rem, 27vw, 24rem);
+  opacity: clamp(0.5, calc(var(--sc-p, 0) * 6 - var(--i) + 2.2), 1);
+}
+.svc__item img {
+  width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: var(--sc-r-md); box-shadow: var(--sc-e2);
+}
+.svc__item h3 { margin: var(--sc-4) 0 var(--sc-2); font-size: var(--sc-t-xl); font-weight: 800; line-height: 1.15; }
+.svc__item p { margin: 0; color: var(--sc-ink-soft); max-width: 40ch; }
+.svc__item ul { margin: var(--sc-3) 0 0; padding: 0; list-style: none; }
+.svc__item li { position: relative; padding-right: 1.1rem; font-size: var(--sc-t-sm); }
+.svc__item li::before {
+  content: ""; position: absolute; right: 0; top: 0.72em; width: 0.4rem; height: 0.4rem;
+  border-radius: 1px; background: var(--sc-accent);
+}
+@media (max-width: 860px) {
+  .svc__item { width: min(76vw, 19rem); }
+  .svc__item img { aspect-ratio: 5 / 4; }
+}
+
+/* ---------------------------------------------------------------- peak -- */
+.peak__stage { background: #0b090e; }
+.peak__photo, .peak__photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.peak__photo img { object-fit: cover; object-position: 50% 30%; max-width: none; }
+/* phone crop: anchored to the right hand, so the hand is whole and the hold only peeks in */
+@media (max-width: 860px) { .peak__photo img { object-position: 100% 20%; } }
+.peak__photo {
+  z-index: 0;
+  /* the photo arrives under the whiteout and is uncovered as the dust thins */
+  opacity: clamp(0, calc((var(--sc-p, 0) - 0.4) * 14), 1);
+  transform: scale(calc(1.12 - clamp(0, calc(var(--sc-p, 0) - 0.4), 0.6) * 0.18));
+}
+.peak__chalk { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+.peak__scrim {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background: linear-gradient(to top, color-mix(in oklab, #0b090e 94%, transparent) 0%,
+    color-mix(in oklab, #0b090e 76%, transparent) max(26%, 12rem), transparent max(52%, 22rem));
+  opacity: clamp(0, calc((var(--sc-p, 0) - 0.6) * 8), 1);
+}
+.peak__hush {
+  position: absolute; z-index: 3; inset: 0; margin: auto; height: max-content;
+  text-align: center; font-size: var(--sc-t-4xl); font-weight: 800; line-height: 1; color: var(--sc-ink);
+  letter-spacing: -0.02em;
+}
+.peak__copy {
+  position: absolute; z-index: 3;
+  right: var(--sc-gutter); bottom: clamp(2.5rem, 9svh, 6rem);
+  width: min(40rem, calc(100vw - 2 * var(--sc-gutter)));
+}
+.peak__copy .body { margin-top: var(--sc-4); color: color-mix(in oklab, var(--sc-ink) 84%, transparent); }
+
+/* --------------------------------------------------------------- route -- */
+.route__stage {
+  display: grid; grid-template-rows: auto 1fr; gap: var(--sc-5);
+  padding: calc(var(--sc-8) + var(--sc-4)) var(--sc-gutter) var(--sc-6);
+  max-width: var(--sc-maxw); margin-inline: auto;
+}
+.route__wall {
+  /* the line is fully drawn at p 0.77; the arrowhead lands by 0.84 and the
+     stage then holds on the finished route until the pin releases */
+  --draw: clamp(0, calc((var(--sc-p, 0) - 0.05) / 0.72), 1);
+  --arrow: clamp(0, calc((var(--sc-p, 0) - 0.77) * 14), 1);
+  position: relative; height: 100%; min-height: 0;
+  width: min(100%, 44rem);
+}
+/* the route runs in a column on the inline-end side; steps read beside it */
+.route__svg {
+  position: absolute; inset-block: 0; left: 0; width: clamp(5.5rem, 12vw, 10rem); height: 100%; overflow: visible;
+}
+.route__svg path { fill: none; stroke-linecap: round; }
+.route__track { stroke: color-mix(in oklab, var(--sc-ink) 16%, transparent); stroke-width: 2; stroke-dasharray: 2 7; }
+.route__draw {
+  stroke: var(--sc-accent); stroke-width: 3;
+  stroke-dasharray: calc(var(--len, 1) * 1px) calc(var(--len, 1) * 1px);
+  stroke-dashoffset: calc(var(--len, 1) * (1 - var(--draw)) * 1px);
+}
+.route__arrow {
+  stroke: var(--sc-accent); stroke-width: 3;
+  stroke-dasharray: calc(var(--alen, 14) * 1px) calc(var(--alen, 14) * 1px);
+  stroke-dashoffset: calc(var(--alen, 14) * (1 - var(--arrow)) * 1px);
+}
+.route__steps { list-style: none; margin: 0; padding: 0; }
+.route__steps li {
+  --t0: 2; --t1: 3;   /* set from the real path in page.js */
+  --fill: clamp(0, calc((var(--sc-p, 0) - var(--t0)) / (var(--t1) - var(--t0))), 1);
+  --on: clamp(0, calc((var(--sc-p, 0) - var(--t0)) * 18), 1);
+  position: absolute; top: var(--y); right: 0;
+  left: calc(clamp(5.5rem, 12vw, 10rem) + var(--sc-5));
+  translate: 0 -50%;
+  display: grid; row-gap: var(--sc-1);
+}
+/* only the words dim; the icon's circle stays opaque so the line never shows through it */
+.route__steps strong, .route__line { opacity: calc(0.32 + 0.68 * var(--on)); }
+.route__steps strong { font-size: var(--sc-t-lg); font-weight: 800; line-height: 1.2; }
+.route__line { color: var(--sc-ink-soft); font-size: var(--sc-t-sm); max-width: 40ch; }
+/* the live site's step icons sit on the route; each one fills with the
+   accent the moment the drawn line reaches it */
+.route__hold {
+  --d: clamp(2.5rem, 3.4vw, 2.875rem);
+  position: absolute; top: 50%;
+  left: calc(-1 * (clamp(5.5rem, 12vw, 10rem) + var(--sc-5)) + clamp(5.5rem, 12vw, 10rem) * var(--x) / 100);
+  width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  display: grid; place-items: center; border-radius: 50%;
+  /* purple rises from the bottom edge as the line climbs through the circle */
+  background: linear-gradient(to top, var(--sc-accent) calc(var(--fill) * 100%), #1b1526 calc(var(--fill) * 100%));
+  border: 1px solid color-mix(in oklab, var(--sc-accent) calc(35% + var(--fill) * 65%), #1b1526);
+  color: color-mix(in oklab, var(--sc-accent-ink) calc(var(--fill) * 100%), #8f86a0);
+  box-shadow: var(--sc-e1);
+  scale: calc(0.9 + 0.1 * var(--fill));
+}
+.route__hold svg { width: 46%; height: 46%; }
+
+/* --------------------------------------------------------------- close -- */
+.close {
+  padding: var(--sc-section) var(--sc-gutter) var(--sc-6);
+  max-width: var(--sc-maxw); margin-inline: auto;
+  min-height: 88svh; display: flex; flex-direction: column; justify-content: space-between;
+}
+.close__ask { max-width: 40rem; margin: auto; text-align: center; }
+.close__ask > * + * { margin-top: var(--sc-4); }
+.close__ask .h2 { font-size: var(--sc-t-3xl); }
+.close__ask .h2::after { margin-inline: auto; }
+.close__ask .body { margin-inline: auto; }
+.foot {
+  display: flex; justify-content: space-between; gap: var(--sc-4); flex-wrap: wrap;
+  margin-top: var(--sc-9); padding-top: var(--sc-5);
+  border-top: 1px solid var(--sc-hairline);
+  color: var(--sc-ink-soft); font-size: var(--sc-t-sm);
+}
+
+/* ------------------------------------------------------- reduced motion -- */
+@media (prefers-reduced-motion: reduce) {
+  .hero__scene, .hero__scene img, .hero__name-wrap, .hero__coach, .hero__next-title > span { transform: none !important; }
+  .svc__stage { overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; }
+  .svc__rail { position: static; transform: none; }
+  .svc__item { opacity: 1; scroll-snap-align: center; }
+  .peak__photo { transform: none; }   /* opacity still follows the act, so the hush line stays on black */
+  .peak__scrim { opacity: 1; }
+  .route__wall { --draw: 1; --arrow: 1; }
+  .route__steps li { --on: 1; --fill: 1; }
+}
