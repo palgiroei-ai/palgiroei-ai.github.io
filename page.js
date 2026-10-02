@@ -276,4 +276,13 @@
     if (innerWidth !== rw || !phone) { rw = innerWidth; setup(); }
   });
   if (!reduce) requestAnimationFrame(frame);
+
+  // The "כניסה" menu closes on a tap outside it or on Escape.
+  var enter = document.querySelector('.enter');
+  document.addEventListener('click', function (e) {
+    if (enter.open && !enter.contains(e.target)) enter.open = false;
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && enter.open) { enter.open = false; enter.querySelector('summary').focus(); }
+  });
 })();
