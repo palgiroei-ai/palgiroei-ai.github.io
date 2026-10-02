@@ -90,6 +90,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 .rung--sm::before { right: 0.75rem; } .rung--sm::after { left: 0.75rem; }
 /* the bar's end: a quiet "כניסה" rung that drops a small menu, then the lit one */
 .bar__end { display: flex; align-items: center; gap: var(--sc-2); }
+.bar__end .rung--sm { box-sizing: border-box; width: 8.5rem; height: 2.75rem; padding: 0 1.6rem; }
 .enter { position: relative; }
 .enter > summary { list-style: none; cursor: pointer; }
 .enter > summary::-webkit-details-marker { display: none; }
