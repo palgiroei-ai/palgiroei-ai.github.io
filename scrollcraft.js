@@ -851,7 +851,10 @@
           a.vp = a.dwell ? dwell(vraw, a.dwell) : vraw;
         }
         a.live = (y > a.top - vh * 1.25) && (y < a.top + a.height + vh * 1.25);
-        a.el.style.setProperty('--sc-p', a.p.toFixed(4));
+        // Off-screen acts sit clamped at 0 or 1; rewriting the same value on
+        // every scroll event still costs Safari a style pass over the subtree.
+        var ps = a.p.toFixed(4);
+        if (ps !== a.ps) { a.ps = ps; a.el.style.setProperty('--sc-p', ps); }
 
         // Fetch earlier than we drive. A 1080p clip is megabytes, and a reader
         // who scrolls briskly will otherwise arrive at a stage that is still
