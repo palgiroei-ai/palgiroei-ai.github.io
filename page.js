@@ -83,22 +83,51 @@
     placeHold(); window.addEventListener('resize', placeHold, { passive: true });
     if (document.fonts) document.fonts.ready.then(placeHold);
     var dots = nav.querySelectorAll('i'), hint = nav.querySelector('.svc__hint');
-    var markDot = function () {
-      var mid = swipeStage.getBoundingClientRect().left + swipeStage.clientWidth / 2, best = 0, bestD = Infinity;
-      cards.forEach(function (c, i) { var r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); if (d < bestD) { bestD = d; best = i; } });
-      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-on', i === best);
+    // An endless loop: a full set of copies on each side, so the last card already peeks in beside the first.
+    var n = cards.length;
+    var cloneOf = function (c) { var k = c.cloneNode(true); k.setAttribute('aria-hidden', 'true'); return k; };
+    cards.map(cloneOf).forEach(function (k) { rail.insertBefore(k, cards[0]); });
+    cards.map(cloneOf).forEach(function (k) { rail.appendChild(k); });
+    var all = [].slice.call(rail.querySelectorAll('.svc__item'));
+    var mid = function (el) { var r = el.getBoundingClientRect(); return r.left + r.width / 2; };
+    var nearest = function () {
+      var m = mid(swipeStage), best = 0, bestD = Infinity;
+      all.forEach(function (c, i) { var d = Math.abs(mid(c) - m); if (d < bestD) { bestD = d; best = i; } });
+      return best;
     };
-    markDot();
-    var nudging = false;
-    swipeStage.addEventListener('scroll', function () { markDot(); if (!nudging && Math.abs(swipeStage.scrollLeft) > 30) hint.classList.add('is-done'); }, { passive: true });
+    var moveTo = function (card) {   // instant, with snapping off so the jump never animates
+      swipeStage.style.scrollSnapType = 'none';
+      swipeStage.scrollLeft += mid(card) - mid(swipeStage);
+      requestAnimationFrame(function () { swipeStage.style.scrollSnapType = ''; });
+    };
+    var markDot = function () {
+      var on = nearest() % n;
+      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-on', i === on);
+    };
+    var home = 0, nudging = false, touching = false, settle = 0;
+    var center = function () { moveTo(all[n + (nearest() % n)]); home = swipeStage.scrollLeft; };
+    moveTo(all[n]); home = swipeStage.scrollLeft; markDot();
+    window.addEventListener('resize', center, { passive: true });
+    var wrap = function () {   // resting on a copy: step to the same card in the middle set, which looks identical
+      if (nudging || touching) return;
+      var b = nearest();
+      if (b < n) moveTo(all[b + n]); else if (b >= 2 * n) moveTo(all[b - n]);
+    };
+    swipeStage.addEventListener('touchstart', function () { touching = true; }, { passive: true });
+    swipeStage.addEventListener('touchend', function () { touching = false; clearTimeout(settle); settle = setTimeout(wrap, 160); }, { passive: true });
+    swipeStage.addEventListener('scroll', function () {
+      markDot();
+      if (!nudging && Math.abs(swipeStage.scrollLeft - home) > 30) hint.classList.add('is-done');
+      clearTimeout(settle); settle = setTimeout(wrap, 160);
+    }, { passive: true });
     if (!reduce && 'IntersectionObserver' in window) {
       var seen = new IntersectionObserver(function (es) {
         if (!es[0].isIntersecting) return;
         seen.disconnect();
-        if (Math.abs(swipeStage.scrollLeft) > 5) return;
+        if (Math.abs(swipeStage.scrollLeft - home) > 5) return;
         nudging = true; swipeStage.style.scrollSnapType = 'none';
-        swipeStage.scrollTo({ left: -130, behavior: 'smooth' });
-        setTimeout(function () { swipeStage.scrollTo({ left: 0, behavior: 'smooth' }); }, 750);
+        swipeStage.scrollTo({ left: home - 130, behavior: 'smooth' });
+        setTimeout(function () { swipeStage.scrollTo({ left: home, behavior: 'smooth' }); }, 750);
         setTimeout(function () { swipeStage.style.scrollSnapType = ''; nudging = false; }, 1500);
       }, { threshold: 0.7 });
       seen.observe(swipeStage);

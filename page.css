@@ -316,7 +316,7 @@ body { line-height: 1.7; letter-spacing: 0; }
   /* phone: a native sideways scroller, swiped directly, starting at the right in RTL */
   .svc::after { content: ""; display: block; height: 38svh; } /* the sticky hold's room: padding would not count */
   .svc__hold { position: sticky; top: var(--hold-top, 4.5rem); padding-block: var(--sc-5); }
-  .svc__stage { display: block; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .svc__stage { display: block; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .svc__stage::-webkit-scrollbar { display: none; }
   .svc__rail { position: static; transform: none; will-change: auto; }
   .svc__lead { width: auto; padding-inline: var(--sc-gutter); margin-bottom: var(--sc-5); }
