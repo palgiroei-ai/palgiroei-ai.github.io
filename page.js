@@ -104,20 +104,20 @@
       var on = nearest() % n;
       for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-on', i === on);
     };
-    var home = 0, nudging = false, touching = false, settle = 0;
+    var home = 0, touching = false, settle = 0;
     var center = function () { moveTo(all[n + (nearest() % n)]); home = swipeStage.scrollLeft; };
     moveTo(all[n]); home = swipeStage.scrollLeft; markDot();
     window.addEventListener('resize', center, { passive: true });
     var wrap = function () {   // resting on a copy: step to the same card in the middle set, which looks identical
-      if (nudging || touching) return;
+      if (touching) return;
       var b = nearest();
       if (b < n) moveTo(all[b + n]); else if (b >= 2 * n) moveTo(all[b - n]);
     };
-    swipeStage.addEventListener('touchstart', function () { touching = true; }, { passive: true });
+    swipeStage.addEventListener('touchstart', function () { touching = true; rail.classList.remove('is-wiggling'); }, { passive: true });
     swipeStage.addEventListener('touchend', function () { touching = false; clearTimeout(settle); settle = setTimeout(wrap, 160); }, { passive: true });
     swipeStage.addEventListener('scroll', function () {
       markDot();
-      if (!nudging && Math.abs(swipeStage.scrollLeft - home) > 30) hint.classList.add('is-done');
+      if (Math.abs(swipeStage.scrollLeft - home) > 30) hint.classList.add('is-done');
       clearTimeout(settle); settle = setTimeout(wrap, 160);
     }, { passive: true });
     if (!reduce && 'IntersectionObserver' in window) {
@@ -125,10 +125,8 @@
         if (!es[0].isIntersecting) return;
         seen.disconnect();
         if (Math.abs(swipeStage.scrollLeft - home) > 5) return;
-        nudging = true; swipeStage.style.scrollSnapType = 'none';
-        swipeStage.scrollTo({ left: home - 130, behavior: 'smooth' });
-        setTimeout(function () { swipeStage.scrollTo({ left: home, behavior: 'smooth' }); }, 750);
-        setTimeout(function () { swipeStage.style.scrollSnapType = ''; nudging = false; }, 1500);
+        rail.classList.add('is-wiggling');
+        rail.addEventListener('animationend', function () { rail.classList.remove('is-wiggling'); }, { once: true });
       }, { threshold: 0.7 });
       seen.observe(swipeStage);
     }
