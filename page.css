@@ -61,6 +61,8 @@ body { line-height: 1.7; letter-spacing: 0; }
   content: ""; position: absolute; inset: 0 0 -1.5rem 0; z-index: -1; pointer-events: none;
   background: linear-gradient(to bottom, color-mix(in oklab, var(--sc-canvas) 88%, transparent) 40%, transparent);
 }
+.bar { transition: opacity 240ms var(--sc-ease-out); }
+.bar.is-hidden { opacity: 0; pointer-events: none; }
 .bar__mark img { width: clamp(9.5rem, 13vw, 11.5rem); height: auto; }
 /* buttons are campus-board rungs: near-square ends, a bolt at each end,
    a lit top lip, and a small lift when you reach for one */

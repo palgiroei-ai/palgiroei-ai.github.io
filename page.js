@@ -56,6 +56,13 @@
   var sprite = makeSprite('244,241,235');
   var shade = makeSprite('150,144,134');
 
+  // The peak gets the whole screen: the light top bar steps aside while it holds the middle of the view.
+  var topBar = document.querySelector('.bar'), peakSection = document.getElementById('moment');
+  if (topBar && peakSection && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { topBar.classList.toggle('is-hidden', es[0].isIntersecting); },
+      { rootMargin: '-50% 0px -50% 0px' }).observe(peakSection);
+  }
+
   // ------------------------------------------------ services: RTL rail --
   // The engine's pan device only travels leftward. In Hebrew the next item has
   // to arrive from the left, so the rail is driven here from --sc-p instead.
