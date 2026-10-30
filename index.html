@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="scrollcraft.css?v=2">
-<link rel="stylesheet" href="page.css?v=5">
+<link rel="stylesheet" href="page.css?v=6">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -98,7 +98,7 @@
   </section>
 
   <!-- 3 · BREADTH: services travel right to left. Page-local rail from --sc-p. -->
-  <section id="services" class="svc" data-sc-act="pin" data-sc-span="4" data-sc-drift="#f5f1ea">
+  <section id="services" class="svc" data-sc-act="pin" data-sc-span="3.4" data-sc-drift="#f5f1ea">
     <div data-sc-stage class="svc__stage">
       <div class="svc__rail">
         <div class="svc__lead">
@@ -193,10 +193,14 @@
 </main>
 
 <script>
-  // A phone's rail travels farther per card, so it owns more scroll for the same pace as desktop.
-  if (matchMedia('(max-width: 860px)').matches) document.getElementById('services').setAttribute('data-sc-span', '5.5');
+  // Phone: the services rail is a native sideways scroller, not a pinned act, so the browser moves it.
+  if (matchMedia('(max-width: 860px)').matches) {
+    var svcEl = document.getElementById('services');
+    svcEl.removeAttribute('data-sc-act'); svcEl.removeAttribute('data-sc-span');
+    svcEl.querySelector('.svc__stage').removeAttribute('data-sc-stage');
+  }
 </script>
 <script src="scrollcraft.js?v=3"></script>
-<script src="page.js?v=3"></script>
+<script src="page.js?v=4"></script>
 </body>
 </html>

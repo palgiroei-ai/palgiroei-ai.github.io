@@ -310,7 +310,12 @@ body { line-height: 1.7; letter-spacing: 0; }
   border-radius: 1px; background: var(--sc-accent);
 }
 @media (max-width: 860px) {
-  /* no per-card fade or shadow here: only the rail's transform changes while scrolling */
+  /* phone: a native sideways scroller, swiped directly, starting at the right in RTL */
+  .svc { padding-block: var(--sc-7); }
+  .svc__stage { display: block; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .svc__stage::-webkit-scrollbar { display: none; }
+  .svc__rail { position: static; transform: none; will-change: auto; }
+  .svc__lead, .svc__item { scroll-snap-align: center; }
   .svc__item { width: min(76vw, 19rem); opacity: 1; }
   .svc__item img { aspect-ratio: 5 / 4; box-shadow: none; }
 }

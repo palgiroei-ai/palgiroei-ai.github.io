@@ -63,7 +63,7 @@
   // Decode the photos up front, so none of them pops in while the rail is moving.
   rail && rail.querySelectorAll('img').forEach(function (img) { if (img.decode) img.decode().catch(function () {}); });
   function measureRail() {
-    if (reduce) return;
+    if (reduce || !svc) return;
     var over = Math.max(rail.scrollWidth - svc.stage.clientWidth, 0);
     rail.style.setProperty('--over', over + 'px');
   }
