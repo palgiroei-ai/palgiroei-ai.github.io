@@ -310,9 +310,9 @@ body { line-height: 1.7; letter-spacing: 0; }
   border-radius: 1px; background: var(--sc-accent);
 }
 @media (max-width: 860px) {
-  /* each card fades on its own layer, so the travelling rail is not repainted */
-  .svc__item { width: min(76vw, 19rem); will-change: opacity; }
-  .svc__item img { aspect-ratio: 5 / 4; }
+  /* no per-card fade or shadow here: only the rail's transform changes while scrolling */
+  .svc__item { width: min(76vw, 19rem); opacity: 1; }
+  .svc__item img { aspect-ratio: 5 / 4; box-shadow: none; }
 }
 
 /* ---------------------------------------------------------------- peak -- */

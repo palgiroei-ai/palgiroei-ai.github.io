@@ -60,6 +60,8 @@
   // The engine's pan device only travels leftward. In Hebrew the next item has
   // to arrive from the left, so the rail is driven here from --sc-p instead.
   var rail = document.querySelector('.svc__rail');
+  // Decode the photos up front, so none of them pops in while the rail is moving.
+  rail && rail.querySelectorAll('img').forEach(function (img) { if (img.decode) img.decode().catch(function () {}); });
   function measureRail() {
     if (reduce) return;
     var over = Math.max(rail.scrollWidth - svc.stage.clientWidth, 0);
