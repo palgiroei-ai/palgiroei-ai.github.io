@@ -314,7 +314,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 }
 @media (max-width: 860px) {
   /* phone: a native sideways scroller, swiped directly, starting at the right in RTL */
-  .svc { padding-bottom: 38svh; }
+  .svc::after { content: ""; display: block; height: 38svh; } /* the sticky hold's room: padding would not count */
   .svc__hold { position: sticky; top: var(--hold-top, 4.5rem); padding-block: var(--sc-5); }
   .svc__stage { display: block; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .svc__stage::-webkit-scrollbar { display: none; }
