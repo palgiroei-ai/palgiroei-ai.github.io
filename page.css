@@ -281,6 +281,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 }
 
 /* ------------------------------------------------------------ services -- */
+.svc { background: #ebe4d8; }
 .svc__stage { display: flex; align-items: center; }
 .svc__rail {
   --over: 0px;
@@ -335,7 +336,7 @@ body { line-height: 1.7; letter-spacing: 0; }
   .svc__hint { grid-column: 1; justify-self: start; }
   .svc__dots { grid-column: 2; }
   .svc__dots { display: flex; gap: 0.45rem; }
-  .svc__dots i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--sc-hairline); transition: background 160ms; }
+  .svc__dots i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #cdc2b0; transition: background 160ms; }
   .svc__dots i.is-on { background: var(--sc-accent); }
   .svc__item { width: min(76vw, 19rem); opacity: 1; }
   .svc__item img { aspect-ratio: 5 / 4; box-shadow: none; }
