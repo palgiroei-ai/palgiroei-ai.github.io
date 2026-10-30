@@ -452,6 +452,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 }
 .close__ask { max-width: 40rem; margin: auto; text-align: center; }
 .close__ask > * + * { margin-top: var(--sc-4); }
+.close__logo { width: clamp(9.5rem, 16vw, 11.5rem); height: auto; margin: 0 auto var(--sc-6); }
 .close__ask .h2 { font-size: var(--sc-t-3xl); }
 .close__ask .h2::after { margin-inline: auto; }
 .close__ask .body { margin-inline: auto; }
