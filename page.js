@@ -77,6 +77,11 @@
     nav.innerHTML = '<span class="svc__hint"><span>החליקו לצד</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></span>' +
       '<span class="svc__dots" aria-hidden="true">' + cards.map(function () { return '<i></i>'; }).join('') + '</span>';
     swipeStage.parentNode.insertBefore(nav, swipeStage.nextSibling);
+    // On a short screen the block is taller than the view: hold it with its bottom edge visible.
+    var hold = swipeStage.parentNode;
+    var placeHold = function () { hold.style.setProperty('--hold-top', Math.min(72, window.innerHeight - hold.offsetHeight) + 'px'); };
+    placeHold(); window.addEventListener('resize', placeHold, { passive: true });
+    if (document.fonts) document.fonts.ready.then(placeHold);
     var dots = nav.querySelectorAll('i'), hint = nav.querySelector('.svc__hint');
     var markDot = function () {
       var mid = swipeStage.getBoundingClientRect().left + swipeStage.clientWidth / 2, best = 0, bestD = Infinity;
