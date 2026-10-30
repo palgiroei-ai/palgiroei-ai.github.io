@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="scrollcraft.css?v=2">
-<link rel="stylesheet" href="page.css?v=6">
+<link rel="stylesheet" href="page.css?v=7">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -197,10 +197,12 @@
   if (matchMedia('(max-width: 860px)').matches) {
     var svcEl = document.getElementById('services');
     svcEl.removeAttribute('data-sc-act'); svcEl.removeAttribute('data-sc-span');
-    svcEl.querySelector('.svc__stage').removeAttribute('data-sc-stage');
+    var svcStage = svcEl.querySelector('.svc__stage');
+    svcStage.removeAttribute('data-sc-stage');
+    svcEl.insertBefore(svcEl.querySelector('.svc__lead'), svcStage); // the title stays put above the swiped cards
   }
 </script>
 <script src="scrollcraft.js?v=3"></script>
-<script src="page.js?v=4"></script>
+<script src="page.js?v=5"></script>
 </body>
 </html>

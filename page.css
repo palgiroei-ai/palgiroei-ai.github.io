@@ -315,7 +315,15 @@ body { line-height: 1.7; letter-spacing: 0; }
   .svc__stage { display: block; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .svc__stage::-webkit-scrollbar { display: none; }
   .svc__rail { position: static; transform: none; will-change: auto; }
-  .svc__lead, .svc__item { scroll-snap-align: center; }
+  .svc__lead { width: auto; padding-inline: var(--sc-gutter); margin-bottom: var(--sc-5); }
+  .svc__item { scroll-snap-align: center; }
+  .svc__nav { display: flex; align-items: center; justify-content: space-between; gap: var(--sc-3); padding: var(--sc-4) var(--sc-gutter) 0; }
+  .svc__hint { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--sc-accent); font-size: var(--sc-t-sm); font-weight: 700; transition: opacity 240ms var(--sc-ease-out); }
+  .svc__hint svg { width: 1.1em; height: 1.1em; }
+  .svc__hint.is-done { opacity: 0; }
+  .svc__dots { display: flex; gap: 0.45rem; }
+  .svc__dots i { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--sc-hairline); transition: background 160ms; }
+  .svc__dots i.is-on { background: var(--sc-accent); }
   .svc__item { width: min(76vw, 19rem); opacity: 1; }
   .svc__item img { aspect-ratio: 5 / 4; box-shadow: none; }
 }

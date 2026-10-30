@@ -62,6 +62,36 @@
   var rail = document.querySelector('.svc__rail');
   // Decode the photos up front, so none of them pops in while the rail is moving.
   rail && rail.querySelectorAll('img').forEach(function (img) { if (img.decode) img.decode().catch(function () {}); });
+  // Phone: show that the cards swipe sideways: a hint, a dot per card, one small nudge on arrival.
+  var swipeStage = !svc && document.querySelector('.svc__stage');
+  if (swipeStage) {
+    var cards = [].slice.call(rail.querySelectorAll('.svc__item'));
+    var nav = document.createElement('div'); nav.className = 'svc__nav';
+    nav.innerHTML = '<span class="svc__hint"><span>החליקו לצד</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg></span>' +
+      '<span class="svc__dots" aria-hidden="true">' + cards.map(function () { return '<i></i>'; }).join('') + '</span>';
+    swipeStage.parentNode.insertBefore(nav, swipeStage.nextSibling);
+    var dots = nav.querySelectorAll('i'), hint = nav.querySelector('.svc__hint');
+    var markDot = function () {
+      var mid = swipeStage.getBoundingClientRect().left + swipeStage.clientWidth / 2, best = 0, bestD = Infinity;
+      cards.forEach(function (c, i) { var r = c.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - mid); if (d < bestD) { bestD = d; best = i; } });
+      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-on', i === best);
+    };
+    markDot();
+    var nudging = false;
+    swipeStage.addEventListener('scroll', function () { markDot(); if (!nudging && Math.abs(swipeStage.scrollLeft) > 30) hint.classList.add('is-done'); }, { passive: true });
+    if (!reduce && 'IntersectionObserver' in window) {
+      var seen = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        seen.disconnect();
+        if (Math.abs(swipeStage.scrollLeft) > 5) return;
+        nudging = true; swipeStage.style.scrollSnapType = 'none';
+        swipeStage.scrollTo({ left: -56, behavior: 'smooth' });
+        setTimeout(function () { swipeStage.scrollTo({ left: 0, behavior: 'smooth' }); }, 520);
+        setTimeout(function () { swipeStage.style.scrollSnapType = ''; nudging = false; }, 1100);
+      }, { threshold: 0.7 });
+      seen.observe(swipeStage);
+    }
+  }
   function measureRail() {
     if (reduce || !svc) return;
     var over = Math.max(rail.scrollWidth - svc.stage.clientWidth, 0);
