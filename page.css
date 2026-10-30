@@ -2,16 +2,19 @@
    .sc-stage / [data-sc-*] rules are the mechanism and stay untouched. */
 
 :root {
-  /* the live site's palette: purple-black ground, lilac accent */
-  --sc-canvas:     #0e0b12;
-  --sc-surface:    #1a1522;
-  --sc-ink:        #f4f2f6;
-  --sc-ink-soft:   #b3acbd;
-  --sc-accent:     #b16ce8;
-  --sc-accent-ink: #170e20;
+  /* the Palgi brand: chalk ground, deep purple ink, brown accent */
+  --sc-canvas:     #f5f1ea;
+  --sc-surface:    #ffffff;
+  --sc-ink:        #2a1a45;
+  --sc-ink-soft:   #5b5069;
+  --sc-accent:     #85603f;
+  --sc-accent-ink: #f5f1ea;
   --sc-font-display: "Heebo", system-ui, sans-serif;
   --sc-font-text:    "Heebo", system-ui, sans-serif;
-  --sc-shadow-color: 275 30% 3%;
+  --sc-shadow-color: 30 20% 40%;
+  --sc-hairline: #ddd4c6;
+  --purple: #2a1a45;
+  --tan: #c8a27a;
 
   /* the hand on the rung, as a fraction of the campus photo */
   --hand-x: 63.6%;
@@ -58,7 +61,7 @@ body { line-height: 1.7; letter-spacing: 0; }
   content: ""; position: absolute; inset: 0 0 -1.5rem 0; z-index: -1; pointer-events: none;
   background: linear-gradient(to bottom, color-mix(in oklab, var(--sc-canvas) 88%, transparent) 40%, transparent);
 }
-.bar__mark img { width: clamp(7rem, 11vw, 9.5rem); height: auto; }
+.bar__mark img { width: clamp(9.5rem, 13vw, 11.5rem); height: auto; }
 /* buttons are campus-board rungs: near-square ends, a bolt at each end,
    a lit top lip, and a small lift when you reach for one */
 .rung {
@@ -66,9 +69,9 @@ body { line-height: 1.7; letter-spacing: 0; }
   width: min(21rem, 100%); min-height: 3.5rem; padding: 0 var(--sc-7);
   border-radius: 6px; text-decoration: none; white-space: nowrap;
   font-weight: 700; font-size: var(--sc-t-lg);
-  color: var(--sc-ink); background: linear-gradient(to bottom, #241c30, #1a1522);
-  border: 1px solid color-mix(in oklab, var(--sc-accent) 30%, transparent);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10), 0 1px 0 rgb(0 0 0 / 0.5), var(--sc-e2);
+  color: var(--sc-ink); background: var(--sc-surface);
+  border: 1px solid var(--sc-accent);
+  box-shadow: var(--sc-e1);
   transition: transform 160ms var(--sc-ease-out), box-shadow 160ms var(--sc-ease-out);
 }
 .rung::before, .rung::after {
@@ -78,12 +81,12 @@ body { line-height: 1.7; letter-spacing: 0; }
 .rung::before { right: 1rem; } .rung::after { left: 1rem; }
 .rung--main {
   color: var(--sc-accent-ink); border-color: transparent;
-  background: linear-gradient(to bottom, #c38af0, var(--sc-accent));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 1px 0 rgb(0 0 0 / 0.4), var(--sc-e2);
+  background: var(--purple);
+  box-shadow: var(--sc-e2);
 }
 .rung:active { transform: translateY(1px); }
 @media (hover: hover) and (pointer: fine) {
-  .rung:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), var(--sc-e3); }
+  .rung:hover { transform: translateY(-2px); box-shadow: var(--sc-e3); }
 }
 .rung__ico { width: 1.25em; height: 1.25em; flex: none; }
 .rung--sm { width: auto; min-height: 2.75rem; padding: 0 2.2rem; font-size: var(--sc-t-sm); }
@@ -96,7 +99,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 @media (max-width: 860px) {
   .bar { gap: var(--sc-3); }
   .bar__mark { flex: none; }
-  .bar__mark img { width: 6rem; }
+  .bar__mark img { width: 7.5rem; }
   .bar__end { gap: 0.375rem; }
   .bar__end .rung--sm { width: 6.25rem; height: 2.5rem; min-height: 0; padding: 0; font-size: 0.8125rem; }
   .bar__end .rung--sm::before { right: 0.55rem; } .bar__end .rung--sm::after { left: 0.55rem; }
@@ -120,27 +123,6 @@ body { line-height: 1.7; letter-spacing: 0; }
 
 /* ---------------------------------------------------------------- hero -- */
 .hero__stage { background: var(--sc-canvas); }
-/* one warm overhead light on the wall, the rest of the room falls away */
-.hero__light {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(60vmax 70vmax at 26% 30%,
-    color-mix(in oklab, #d9b98a 12%, transparent), transparent 70%);
-}
-/* the room gets the live site's aurora; the warm light stays on the wall */
-.aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-  /* the glow thins out before the stage's bottom edge, so it never ends in a line */
-  -webkit-mask-image: linear-gradient(to top, transparent 0%, #000 35%); mask-image: linear-gradient(to top, transparent 0%, #000 35%); }
-.aurora::before, .aurora::after {
-  content: ""; position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%; opacity: 0.2;
-}
-.aurora::before { right: -22vmax; top: -30vmax; background: radial-gradient(circle, #7b2ff7 0%, transparent 62%); }
-.aurora::after  { right: 8vmax; bottom: -40vmax; background: radial-gradient(circle, #d16ba5 0%, transparent 62%); opacity: 0.14; }
-@media (prefers-reduced-motion: no-preference) {
-  .aurora::before { animation: drift1 28s ease-in-out infinite alternate; }
-  .aurora::after  { animation: drift2 34s ease-in-out infinite alternate; }
-}
-@keyframes drift1 { to { transform: translate3d(-8vmax, 6vmax, 0); } }
-@keyframes drift2 { to { transform: translate3d(6vmax, -5vmax, 0); } }
 .hero__scene {
   --p: min(calc(var(--sc-p, 0) / 0.55), 1);
   --fade: clamp(0, calc((var(--sc-p, 0) - 0.48) / 0.14), 1);
@@ -334,7 +316,7 @@ body { line-height: 1.7; letter-spacing: 0; }
 }
 
 /* ---------------------------------------------------------------- peak -- */
-.peak__stage { background: #0b090e; }
+.peak__stage { --sc-ink: #f5f1ea; --sc-accent: var(--tan); background: var(--purple); color: var(--sc-ink); }
 .peak__photo, .peak__photo img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .peak__photo img { object-fit: cover; object-position: 50% 30%; max-width: none; }
 /* phone crop: anchored to the right hand, so the hand is whole and the hold only peeks in */
@@ -348,8 +330,8 @@ body { line-height: 1.7; letter-spacing: 0; }
 .peak__chalk { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
 .peak__scrim {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
-  background: linear-gradient(to top, color-mix(in oklab, #0b090e 94%, transparent) 0%,
-    color-mix(in oklab, #0b090e 76%, transparent) max(26%, 12rem), transparent max(52%, 22rem));
+  background: linear-gradient(to top, color-mix(in oklab, #2a1a45 94%, transparent) 0%,
+    color-mix(in oklab, #2a1a45 76%, transparent) max(26%, 12rem), transparent max(52%, 22rem));
   opacity: clamp(0, calc((var(--sc-p, 0) - 0.6) * 8), 1);
 }
 .peak__hush {
@@ -416,10 +398,10 @@ body { line-height: 1.7; letter-spacing: 0; }
   left: calc(-1 * (clamp(5.5rem, 12vw, 10rem) + var(--sc-5)) + clamp(5.5rem, 12vw, 10rem) * var(--x) / 100);
   width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
   display: grid; place-items: center; border-radius: 50%;
-  /* purple rises from the bottom edge as the line climbs through the circle */
-  background: linear-gradient(to top, var(--sc-accent) calc(var(--fill) * 100%), #1b1526 calc(var(--fill) * 100%));
-  border: 1px solid color-mix(in oklab, var(--sc-accent) calc(35% + var(--fill) * 65%), #1b1526);
-  color: color-mix(in oklab, var(--sc-accent-ink) calc(var(--fill) * 100%), #8f86a0);
+  /* brown rises from the bottom edge as the line climbs through the circle */
+  background: linear-gradient(to top, var(--sc-accent) calc(var(--fill) * 100%), var(--sc-surface) calc(var(--fill) * 100%));
+  border: 1px solid color-mix(in oklab, var(--sc-accent) calc(35% + var(--fill) * 65%), var(--sc-surface));
+  color: color-mix(in oklab, var(--sc-accent-ink) calc(var(--fill) * 100%), var(--sc-accent));
   box-shadow: var(--sc-e1);
   scale: calc(0.9 + 0.1 * var(--fill));
 }
