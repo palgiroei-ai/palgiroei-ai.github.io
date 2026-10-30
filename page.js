@@ -85,9 +85,9 @@
         seen.disconnect();
         if (Math.abs(swipeStage.scrollLeft) > 5) return;
         nudging = true; swipeStage.style.scrollSnapType = 'none';
-        swipeStage.scrollTo({ left: -56, behavior: 'smooth' });
-        setTimeout(function () { swipeStage.scrollTo({ left: 0, behavior: 'smooth' }); }, 520);
-        setTimeout(function () { swipeStage.style.scrollSnapType = ''; nudging = false; }, 1100);
+        swipeStage.scrollTo({ left: -130, behavior: 'smooth' });
+        setTimeout(function () { swipeStage.scrollTo({ left: 0, behavior: 'smooth' }); }, 750);
+        setTimeout(function () { swipeStage.style.scrollSnapType = ''; nudging = false; }, 1500);
       }, { threshold: 0.7 });
       seen.observe(swipeStage);
     }
