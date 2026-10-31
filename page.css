@@ -456,6 +456,25 @@ body { line-height: 1.7; letter-spacing: 0; }
 .close__ask .h2 { font-size: var(--sc-t-3xl); }
 .close__ask .h2::after { margin-inline: auto; }
 .close__ask .body { margin-inline: auto; }
+/* For coaches, not athletes: a quiet aside between services and the peak. */
+.luma-wrap { padding: var(--sc-9) var(--sc-gutter); max-width: var(--sc-maxw); margin-inline: auto; }
+.luma-band {
+  display: flex; flex-direction: column; align-items: center; gap: var(--sc-3); text-align: center;
+  max-width: 40rem; margin-inline: auto; padding: var(--sc-5);
+  border: 1px solid var(--sc-hairline); border-radius: 0.75rem;
+  color: var(--sc-ink-soft); font-size: var(--sc-t-sm);
+}
+.luma-band__brand { display: inline-flex; align-items: center; gap: 0.5rem; color: #14243b; flex: none; }
+.luma-mark { width: 30px; height: 30px; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.luma-mark circle { stroke: #c0743a; opacity: 0.6; }
+.luma-mark path { stroke: currentColor; }
+/* Same heartbeat as the LUMA site: the line draws itself three times, then stays. */
+.luma-mark.is-beating path { stroke-dasharray: 1; animation: luma-beat 1.1s 0.2s ease-out 3 both; }
+@keyframes luma-beat { 0% { stroke-dashoffset: 1; } 60%, 100% { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .luma-mark.is-beating path { animation: none; stroke-dasharray: none; } }
+.luma-word { font-family: "Jost", "Heebo", sans-serif; font-weight: 500; font-size: 1.25rem; letter-spacing: 0.32em; direction: ltr; padding-left: 0.32em; }
+.luma-band__text { margin: 0; }
+.luma-band__text strong { color: var(--sc-ink); }
 .foot {
   display: flex; justify-content: space-between; gap: var(--sc-4); flex-wrap: wrap;
   margin-top: var(--sc-9); padding-top: var(--sc-5);
