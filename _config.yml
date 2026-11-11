@@ -1,0 +1,10 @@
+# GitHub Pages (Jekyll): internal files stay in the repo but are not published on the site.
+exclude:
+  - CLAUDE.md
+  - README.md
+  - docs
+  - leaderboard
+  - _debug.html
+  - _debug.js
+  - login-buttons.patch
+  - tools

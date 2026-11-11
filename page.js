@@ -216,6 +216,8 @@
 
   // ------------------------------------------------------- hero motes --
   var motesCv = document.querySelector('.hero__motes'), M, motes = [];
+  // the motes drift on their own for 5 seconds, then settle (WCAG 2.2.2: no endless self-moving content); scrolling still moves them
+  var motesDrift = true; setTimeout(function () { motesDrift = false; }, 5000);
   function initMotes() {
     M = fit(motesCv);
     var r = rng(7), n = phone ? 34 : 64;
@@ -229,7 +231,7 @@
     var g = M.g; g.clearRect(0, 0, M.w, M.h);
     for (var i = 0; i < motes.length; i++) {
       var m = motes[i];
-      if (!reduce) { m.y -= m.v * m.z * dt; if (m.y < -10) m.y += M.h + 20; m.ph += dt * 0.6; }
+      if (!reduce && motesDrift) { m.y -= m.v * m.z * dt; if (m.y < -10) m.y += M.h + 20; m.ph += dt * 0.6; }
       var x = m.x + Math.sin(m.ph) * 6 * m.z;
       var y = m.y - p * M.h * 0.3 * m.z;          // nearer motes outrun the page
       y = ((y % (M.h + 20)) + M.h + 20) % (M.h + 20) - 10;
