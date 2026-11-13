@@ -33,4 +33,4 @@
 - `_config.yml` excludes internal files (CLAUDE.md, README, docs, leaderboard, tools) from publishing.
 - Accessibility rules kept in code: route step text opacity ≥ 0.88, hero motes drift only 5 s, swipe-hint
   shine runs twice, hidden top bar uses visibility:hidden, svc phone scroller is focusable.
-- Photo credits: physio photo = גלעד טל, peak photo = הילרי חכמון. Minors' photos approved by parents.
+- Photo credits: physio photo = גלעד טל, peak photo = הילרי חכמון, technique (svc-tech) = CROATIA CLIMBING CLUB. Minors' photos approved by parents.
