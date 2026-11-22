@@ -78,6 +78,7 @@ h2::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--c
   background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);font-size:26px;line-height:52px}
 #dhint{text-align:center;color:rgba(0,0,0,.35);font-size:14px}
 body.showing{overflow:hidden}
+.ver{text-align:center;color:var(--muted);font-size:12px;opacity:.7}
 .gender{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .gender span{color:var(--muted);font-size:15px}
 .seg{flex:1;display:flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
@@ -158,6 +159,7 @@ body.editing .reset{display:block}
     <div class="hist-head"><h2>הודעות אחרונות</h2><button class="clear" id="clearHist" type="button">נקה היסטוריה</button></div>
     <div class="hist" id="hist"></div>
   </section>
+  <div class="ver">גרסה 8</div>
 </main>
 
 <div id="display" role="dialog" aria-modal="true">
@@ -257,11 +259,14 @@ $('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus(
 const IDLE='🔊 עידוד בקול', PLAYING='⏹ לחץ לעצירה';
 const audios=[...document.querySelectorAll('audio')];
 function setState(btn,on){btn.classList.toggle('playing',on);btn.querySelector('small').textContent=on?PLAYING:IDLE}
-function stopAll(){audios.forEach(x=>{x.pause();x.currentTime=0});document.querySelectorAll('.cheer').forEach(b=>setState(b,false))}
+let activeBtn=null; // which button is currently playing (tracked by us, not by the audio element — more reliable on iPad Safari)
+function stopAll(){audios.forEach(x=>{try{x.pause();x.currentTime=0}catch(e){}});activeBtn=null;document.querySelectorAll('.cheer').forEach(b=>setState(b,false))}
 function voiceButton(btn,pick){
-  btn.onclick=()=>{const a=pick(); const same=!a.paused; stopAll(); if(same)return;
-    a.onplaying=()=>setState(btn,true); a.onended=()=>setState(btn,false);
-    a.currentTime=0; a.play().catch(()=>{btn.querySelector('small').textContent='⚠️ בדוק שהשמע פתוח'})}}
+  btn.onclick=()=>{const wasMe=activeBtn===btn; stopAll(); if(wasMe)return;
+    const a=pick(); activeBtn=btn; setState(btn,true);
+    a.onended=()=>{if(activeBtn===btn){activeBtn=null;setState(btn,false)}};
+    try{a.currentTime=0}catch(e){}
+    a.play().catch(()=>{activeBtn=null;setState(btn,false);btn.querySelector('small').textContent='⚠️ בדוק שהשמע פתוח'})}}
 voiceButton($('#cheerBtn'),()=>document.getElementById(gender==='f'?'cheerF':'cheerM'));
 voiceButton($('#niceBtn'),()=>$('#niceA'));
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
@@ -306,9 +311,14 @@ addEventListener('keydown',e=>{if(e.key==='Escape')hide(false)});
 let lock=null;
 async function wake(){try{if('wakeLock' in navigator&&document.visibilityState==='visible')lock=await navigator.wakeLock.request('screen')}catch(e){}}
 document.addEventListener('visibilitychange',wake); document.addEventListener('click',()=>{if(!lock)wake()},{once:true}); wake();
-addEventListener('beforeunload',e=>{e.preventDefault();e.returnValue=''});
+const guard=e=>{e.preventDefault();e.returnValue=''}; addEventListener('beforeunload',guard);
 
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator){
+  const hadController=!!navigator.serviceWorker.controller; let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadController&&!reloaded&&!document.body.classList.contains('showing')){reloaded=true;removeEventListener('beforeunload',guard);location.reload()}});
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')navigator.serviceWorker.getRegistration().then(r=>r&&r.update())});
+}
 </script>
 </body>
 </html>
