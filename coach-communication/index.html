@@ -83,6 +83,12 @@ body.showing{overflow:hidden}
 .seg{flex:1;display:flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
 .seg button{flex:1;min-height:50px;border-radius:11px;font-size:19px;font-weight:650;color:var(--muted);background:transparent}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,19,31,.15)}
+.cheer{width:100%;display:flex;align-items:center;justify-content:center;gap:14px;min-height:96px;margin-bottom:16px;
+  border-radius:var(--r);background:linear-gradient(135deg,#ff8a3d,#ff5a3c);color:#fff;font-size:40px;font-weight:900;
+  box-shadow:0 4px 14px rgba(255,90,60,.3)}
+.cheer small{font-size:15px;font-weight:600;opacity:.9}
+.cheer.playing{background:linear-gradient(135deg,#e2662a,#d8432a)}
+.cheer:active{transform:scale(.97)}
 .edit-toggle{min-height:44px;padding:0 16px;border-radius:12px;background:var(--card2);font-size:15px;font-weight:600;border:1px solid var(--line)}
 body.editing .edit-toggle{background:var(--accent);color:#fff;border-color:var(--accent)}
 .edit-note{display:none;background:#efeafc;border:1px dashed var(--accent);color:#4a3596;border-radius:14px;padding:10px 14px;margin-bottom:14px;font-size:15px}
@@ -117,6 +123,10 @@ body.editing .reset{display:block}
       <button type="button" data-g="f" aria-pressed="false">מטפסת</button>
     </div>
   </div>
+
+  <button class="cheer" id="cheerBtn" type="button"><span id="cheerLabel">עלה!</span><small id="cheerState">🔊 עידוד בקול</small></button>
+  <audio id="cheerM" src="ale-m.mp3" preload="auto"></audio>
+  <audio id="cheerF" src="ale-f.mp3" preload="auto"></audio>
 
   <button class="voice" id="voiceBtn" type="button">
     <span class="ico">🤐</span>
@@ -184,6 +194,7 @@ let gender=store.get(K_GENDER,'m');
 const gx=t=>gender==='f'?(FEM[t]||t):t;
 function setGender(v){gender=v;store.set(K_GENDER,v);
   document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.g===v)));
+  $('#cheerLabel').textContent=v==='f'?'עלי!':'עלה!';
   $('#showCustom').textContent=v==='f'?'הצג למטפסת':'הצג למטפס';
   $('#ct').placeholder=v==='f'?'כתוב כאן הודעה למטפסת…':'כתוב כאן הודעה למטפס…';
   renderCats()}
@@ -235,6 +246,14 @@ ta.addEventListener('input',()=>{store.set(K_LAST,ta.value);sync()});
 showBtn.onclick=()=>{const t=ta.value.trim(); if(t){ta.blur(); show(t,'--accent')}};
 ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();showBtn.click()}});
 $('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus()};
+// cheer: plays a pre-recorded voice (Microsoft Avri), works offline
+const cheerBtn=$('#cheerBtn');
+['cheerM','cheerF'].forEach(id=>{const a=document.getElementById(id);
+  a.addEventListener('playing',()=>{cheerBtn.classList.add('playing');$('#cheerState').textContent='🔊 מנגן…'});
+  a.addEventListener('ended',()=>{cheerBtn.classList.remove('playing');$('#cheerState').textContent='🔊 עידוד בקול'})});
+cheerBtn.onclick=()=>{const a=document.getElementById(gender==='f'?'cheerF':'cheerM');
+  document.querySelectorAll('audio').forEach(x=>{x.pause();x.currentTime=0});
+  a.currentTime=0; a.play().catch(()=>{$('#cheerState').textContent='⚠️ בדוק שהשמע פתוח'})};
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
 
 // history
