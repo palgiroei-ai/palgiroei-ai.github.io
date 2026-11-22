@@ -90,13 +90,16 @@ body.showing{overflow:hidden}
 .seg{flex:1;display:flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
 .seg button{flex:1;min-height:50px;border-radius:11px;font-size:19px;font-weight:650;color:var(--muted);background:transparent}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,19,31,.15)}
-.cheers{display:flex;gap:10px;margin-bottom:16px}
-.cheer{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;min-height:96px;padding:8px;
+.cheers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media (max-width:520px){.cheers{grid-template-columns:repeat(2,1fr)}}
+.cheer{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:96px;padding:8px;
   border-radius:var(--r);background:linear-gradient(135deg,#ff8a3d,#ff5a3c);color:#fff;font-size:clamp(26px,6.5vw,40px);font-weight:900;
   box-shadow:0 4px 14px rgba(255,90,60,.3)}
 .cheer small{font-size:clamp(12px,3.3vw,15px);font-weight:600;opacity:.9}
 .cheer.nice{background:linear-gradient(135deg,#1fb88f,#119a76);box-shadow:0 4px 14px rgba(17,154,118,.3)}
 .cheer.nice.playing{background:linear-gradient(135deg,#14946f,#0c7a5c)}
+.cheer.kitsis{background:linear-gradient(135deg,#a855f7,#7c3aed);box-shadow:0 4px 14px rgba(124,58,237,.3)}
+.cheer.kitsis.playing{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
 .cheer.whistle{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 4px 14px rgba(37,99,235,.3)}
 .cheer.whistle.playing{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
 .cheer.playing{background:linear-gradient(135deg,#e2662a,#d8432a)}
@@ -139,13 +142,15 @@ body.editing .reset{display:block}
 
   <div class="cheers">
     <button class="cheer" id="cheerBtn" type="button"><span id="cheerLabel">עלה!</span><small>🔊 עידוד בקול</small></button>
-    <button class="cheer nice" id="niceBtn" type="button" dir="ltr"><span>Nice!</span><small dir="rtl">🔊 עידוד בקול</small></button>
+    <button class="cheer nice" id="niceBtn" type="button"><bdi dir="ltr" style="unicode-bidi:isolate;direction:ltr">Nice!</bdi><small>🔊 עידוד בקול</small></button>
+    <button class="cheer kitsis" id="kitsisBtn" type="button" data-idle="🔊 סאונד"><span>קיציס</span><small>🔊 סאונד</small></button>
     <button class="cheer whistle" id="whistleBtn" type="button" data-idle="🔊 סאונד"><span>שריקה</span><small>🔊 סאונד</small></button>
   </div>
   <audio id="cheerM" src="ale-m.mp3" preload="auto"></audio>
   <audio id="cheerF" src="ale-f.mp3" preload="auto"></audio>
   <audio id="niceA" src="nice.mp3" preload="auto"></audio>
   <audio id="whistleA" src="whistle.m4a" preload="auto"></audio>
+  <audio id="kitsisA" src="kitsis.m4a" preload="auto"></audio>
 
   <button class="voice" id="voiceBtn" type="button">
     <span class="ico">🤐</span>
@@ -170,7 +175,7 @@ body.editing .reset{display:block}
     <div class="hist-head"><h2>הודעות אחרונות</h2><button class="clear" id="clearHist" type="button">נקה היסטוריה</button></div>
     <div class="hist" id="hist"></div>
   </section>
-  <div class="ver"><button class="refresh" id="refreshBtn" type="button">↻ רענן גרסה</button><div>גרסה 11 · אפשר גם למשוך את המסך למטה לרענון</div></div>
+  <div class="ver"><button class="refresh" id="refreshBtn" type="button">↻ רענן גרסה</button><div>גרסה 12 · אפשר גם למשוך את המסך למטה לרענון</div></div>
 </main>
 
 <div id="display" role="dialog" aria-modal="true">
@@ -281,6 +286,7 @@ function voiceButton(btn,pick){
 voiceButton($('#cheerBtn'),()=>document.getElementById(gender==='f'?'cheerF':'cheerM'));
 voiceButton($('#niceBtn'),()=>$('#niceA'));
 voiceButton($('#whistleBtn'),()=>$('#whistleA'));
+voiceButton($('#kitsisBtn'),()=>$('#kitsisA'));
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
 
 // history
