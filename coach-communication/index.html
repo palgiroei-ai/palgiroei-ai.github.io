@@ -83,10 +83,13 @@ body.showing{overflow:hidden}
 .seg{flex:1;display:flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
 .seg button{flex:1;min-height:50px;border-radius:11px;font-size:19px;font-weight:650;color:var(--muted);background:transparent}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,19,31,.15)}
-.cheer{width:100%;display:flex;align-items:center;justify-content:center;gap:14px;min-height:96px;margin-bottom:16px;
+.cheers{display:flex;gap:10px;margin-bottom:16px}
+.cheer{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;min-height:96px;padding:8px;
   border-radius:var(--r);background:linear-gradient(135deg,#ff8a3d,#ff5a3c);color:#fff;font-size:40px;font-weight:900;
   box-shadow:0 4px 14px rgba(255,90,60,.3)}
 .cheer small{font-size:15px;font-weight:600;opacity:.9}
+.cheer.nice{background:linear-gradient(135deg,#1fb88f,#119a76);box-shadow:0 4px 14px rgba(17,154,118,.3)}
+.cheer.nice.playing{background:linear-gradient(135deg,#14946f,#0c7a5c)}
 .cheer.playing{background:linear-gradient(135deg,#e2662a,#d8432a)}
 .cheer:active{transform:scale(.97)}
 .edit-toggle{min-height:44px;padding:0 16px;border-radius:12px;background:var(--card2);font-size:15px;font-weight:600;border:1px solid var(--line)}
@@ -124,9 +127,13 @@ body.editing .reset{display:block}
     </div>
   </div>
 
-  <button class="cheer" id="cheerBtn" type="button"><span id="cheerLabel">עלה!</span><small id="cheerState">🔊 עידוד בקול</small></button>
+  <div class="cheers">
+    <button class="cheer" id="cheerBtn" type="button"><span id="cheerLabel">עלה!</span><small>🔊 עידוד בקול</small></button>
+    <button class="cheer nice" id="niceBtn" type="button" dir="ltr"><span>Nice!</span><small dir="rtl">🔊 עידוד בקול</small></button>
+  </div>
   <audio id="cheerM" src="ale-m.mp3" preload="auto"></audio>
   <audio id="cheerF" src="ale-f.mp3" preload="auto"></audio>
+  <audio id="niceA" src="nice.mp3" preload="auto"></audio>
 
   <button class="voice" id="voiceBtn" type="button">
     <span class="ico">🤐</span>
@@ -246,17 +253,17 @@ ta.addEventListener('input',()=>{store.set(K_LAST,ta.value);sync()});
 showBtn.onclick=()=>{const t=ta.value.trim(); if(t){ta.blur(); show(t,'--accent')}};
 ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();showBtn.click()}});
 $('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus()};
-// cheer: plays a pre-recorded voice (Microsoft Avri), works offline
-const cheerBtn=$('#cheerBtn');
-['cheerM','cheerF'].forEach(id=>{const a=document.getElementById(id);
-  a.addEventListener('playing',()=>{cheerBtn.classList.add('playing');$('#cheerState').textContent='⏹ לחץ לעצירה'});
-  a.addEventListener('ended',()=>{cheerBtn.classList.remove('playing');$('#cheerState').textContent='🔊 עידוד בקול'})});
-const cheerIdle=()=>{cheerBtn.classList.remove('playing');$('#cheerState').textContent='🔊 עידוד בקול'};
-cheerBtn.onclick=()=>{const a=document.getElementById(gender==='f'?'cheerF':'cheerM');
-  const wasPlaying=[...document.querySelectorAll('audio')].some(x=>!x.paused);
-  document.querySelectorAll('audio').forEach(x=>{x.pause();x.currentTime=0});
-  if(wasPlaying){cheerIdle();return}
-  a.currentTime=0; a.play().catch(()=>{$('#cheerState').textContent='⚠️ בדוק שהשמע פתוח'})};
+// voice buttons: pre-recorded Microsoft Avri voice, work offline. Tap again while playing = stop.
+const IDLE='🔊 עידוד בקול', PLAYING='⏹ לחץ לעצירה';
+const audios=[...document.querySelectorAll('audio')];
+function setState(btn,on){btn.classList.toggle('playing',on);btn.querySelector('small').textContent=on?PLAYING:IDLE}
+function stopAll(){audios.forEach(x=>{x.pause();x.currentTime=0});document.querySelectorAll('.cheer').forEach(b=>setState(b,false))}
+function voiceButton(btn,pick){
+  btn.onclick=()=>{const a=pick(); const same=!a.paused; stopAll(); if(same)return;
+    a.onplaying=()=>setState(btn,true); a.onended=()=>setState(btn,false);
+    a.currentTime=0; a.play().catch(()=>{btn.querySelector('small').textContent='⚠️ בדוק שהשמע פתוח'})}}
+voiceButton($('#cheerBtn'),()=>document.getElementById(gender==='f'?'cheerF':'cheerM'));
+voiceButton($('#niceBtn'),()=>$('#niceA'));
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
 
 // history
