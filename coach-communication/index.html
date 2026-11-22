@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PALGI Coach">
+<title>PALGI Coach Communication</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#0b0a0f; --card:#17151e; --card2:#1f1c29; --line:#2c2838;
+  --text:#f5f3fa; --muted:#9a94ab; --accent:#9b7bff;
+  --c-quick:#9b7bff; --c-tech:#3fc8b4; --c-mgmt:#f0b43c; --c-q:#5aa6ff; --c-str:#ff7a6b; --c-voice:#ff5c8a;
+  --r:20px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);overscroll-behavior:none}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Hebrew","Segoe UI",Arial,sans-serif;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  padding:calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 40px)}
+main{max-width:860px;margin:0 auto}
+button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulation}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{font-weight:800;letter-spacing:.18em;font-size:15px;direction:ltr}
+.brand b{color:var(--accent)}
+.sub{color:var(--muted);font-size:13px}
+.voice{width:100%;display:flex;align-items:center;gap:14px;text-align:right;
+  background:linear-gradient(135deg,#3a1630,#22131f);border:1px solid #5a2448;border-radius:var(--r);
+  padding:18px 20px;min-height:84px;margin-bottom:16px}
+.voice .ico{font-size:34px;line-height:1}
+.voice strong{display:block;font-size:22px}
+.voice span{color:#e8b6cb;font-size:15px}
+.custom{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:22px}
+.custom label{display:block;font-size:14px;color:var(--muted);margin-bottom:8px}
+textarea{width:100%;min-height:96px;resize:vertical;background:#0f0e14;color:var(--text);
+  border:1px solid var(--line);border-radius:14px;padding:14px;font:inherit;font-size:22px;line-height:1.35;
+  -webkit-user-select:text;user-select:text;direction:rtl;text-align:right}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:flex;gap:10px;margin-top:10px}
+.btn{flex:1;min-height:60px;border-radius:14px;font-size:20px;font-weight:700;background:var(--accent);color:#120d22}
+.btn.ghost{flex:0 0 auto;padding:0 20px;background:var(--card2);color:var(--text);font-weight:600;font-size:17px}
+.btn:disabled{opacity:.35}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin:0 -16px 14px;padding-inline:16px;scrollbar-width:none;
+  position:sticky;top:0;z-index:5;background:linear-gradient(var(--bg) 80%,transparent);padding-top:8px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;min-height:44px;padding:0 16px;border-radius:999px;background:var(--card2);font-size:15px;border:1px solid var(--line)}
+.chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:8px;background:var(--c)}
+section.cat{margin-bottom:26px;scroll-margin-top:66px}
+h2{font-size:17px;margin:0 0 10px;display:flex;align-items:center;gap:10px;color:var(--text)}
+h2::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--c)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media (min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}}
+.msg{min-height:84px;padding:14px;border-radius:16px;background:var(--card);border:1px solid var(--line);
+  border-inline-start:4px solid var(--c);font-size:21px;font-weight:650;line-height:1.25;text-align:right}
+.msg:active,.voice:active,.btn:active,.hist-item:active{transform:scale(.97);filter:brightness(1.25)}
+.hist-head{display:flex;justify-content:space-between;align-items:center}
+.hist{display:flex;flex-direction:column;gap:8px}
+.hist-item{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:58px;padding:10px 14px;
+  border-radius:14px;background:var(--card);border:1px solid var(--line);text-align:right;font-size:18px}
+.hist-item small{color:var(--muted);font-size:13px;white-space:nowrap}
+.empty{color:var(--muted);font-size:15px;padding:8px 2px}
+.clear{min-height:44px;padding:0 14px;border-radius:12px;background:var(--card2);color:var(--muted);font-size:14px}
+/* full-screen display */
+#display{position:fixed;inset:0;z-index:50;background:#050407;display:none;flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 20px) 28px calc(env(safe-area-inset-bottom) + 20px)}
+#display.on{display:flex}
+#display .bar{position:absolute;top:0;inset-inline:0;height:8px;background:var(--c,var(--accent))}
+#stage{flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#dtext{font-weight:800;line-height:1.12;text-align:center;color:#fff;word-break:break-word;max-width:100%;margin:0}
+#back{position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:16px;width:52px;height:52px;border-radius:50%;
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.55);font-size:26px;line-height:52px}
+#dhint{text-align:center;color:rgba(255,255,255,.28);font-size:14px}
+body.showing{overflow:hidden}
+</style>
+</head>
+<body>
+<main id="app">
+  <header>
+    <div><div class="brand">PALGI <b>TRAINING</b></div><div class="sub">תקשורת מאמן · לחיצה אחת למסך מלא</div></div>
+  </header>
+
+  <button class="voice" id="voiceBtn" type="button">
+    <span class="ico">🤐</span>
+    <span><strong>אין לי קול היום</strong><span>הסבר למטפס שאני מתקשר דרך המסך</span></span>
+  </button>
+
+  <div class="custom">
+    <label for="ct">הודעה חופשית</label>
+    <textarea id="ct" placeholder="כתוב כאן הודעה למטפס…" enterkeyhint="send"></textarea>
+    <div class="row">
+      <button class="btn" id="showCustom" type="button">הצג למטפס</button>
+      <button class="btn ghost" id="clearCustom" type="button">נקה</button>
+    </div>
+  </div>
+
+  <nav class="chips" id="chips"></nav>
+  <div id="cats"></div>
+
+  <section class="cat" id="history" style="--c:var(--muted)">
+    <div class="hist-head"><h2>הודעות אחרונות</h2><button class="clear" id="clearHist" type="button">נקה היסטוריה</button></div>
+    <div class="hist" id="hist"></div>
+  </section>
+</main>
+
+<div id="display" role="dialog" aria-modal="true">
+  <div class="bar"></div>
+  <button id="back" type="button" aria-label="חזרה">×</button>
+  <div id="stage"><p id="dtext"></p></div>
+  <div id="dhint">הקש למסך כדי לחזור</div>
+</div>
+
+<script>
+const VOICE_MSG = 'איבדתי זמנית את הקול 🙏\nאני מדבר איתך דרך המסך';
+const CATS = [
+  {id:'quick', name:'תגובות מהירות', c:'--c-quick', items:['מעולה!','בדיוק ככה!','נסה שוב','עוד ניסיון אחד','כמעט!','תמשיך!','עצור רגע','יפה מאוד!']},
+  {id:'tech', name:'טכניקת טיפוס', c:'--c-tech', items:['תסתכל על הרגליים','העבר משקל לרגליים','אגן קרוב לקיר','תנועה יותר שקטה','דייק באחיזה','אל תמהר','דחוף דרך הרגל','סובב את האגן']},
+  {id:'mgmt', name:'ניהול אימון', c:'--c-mgmt', items:['קח מנוחה','עוד 2 דקות מנוחה','עוברים לתרגיל הבא','3 ניסיונות נוספים','צלם את הניסיון','בוא ננתח את הווידאו','התחל כשאתה מוכן','סיים את הסט']},
+  {id:'q', name:'שאלות', c:'--c-q', items:['איך הרגיש?','מה הייתה הטעות?','יש לך פתרון אחר?','מה המטרה בניסיון הבא?','הבנת את המשימה?','רוצה לנסות שוב?']},
+  {id:'str', name:'כוח אצבעות ואימון גופני', c:'--c-str', items:['התחל סט','שמור על האחיזה','עצור אם יש כאב','מנוחה מלאה בין הסטים','שמור על כתפיים פעילות','סיים את הסט בשליטה']}
+];
+const K_HIST='palgiCC.history', K_LAST='palgiCC.lastCustom', MAX=20;
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+             set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+function jump(id){const el=document.getElementById(id);window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-70,behavior:'smooth'})}
+// build dashboard
+const cats=$('#cats'), chips=$('#chips');
+CATS.forEach(cat=>{
+  const ch=document.createElement('button'); ch.className='chip'; ch.type='button';
+  ch.style.setProperty('--c',`var(${cat.c})`); ch.innerHTML=`<i></i>${cat.name}`;
+  ch.onclick=()=>jump('cat-'+cat.id);
+  chips.appendChild(ch);
+  const s=document.createElement('section'); s.className='cat'; s.id='cat-'+cat.id; s.style.setProperty('--c',`var(${cat.c})`);
+  s.innerHTML=`<h2>${cat.name}</h2><div class="grid"></div>`;
+  const g=s.querySelector('.grid');
+  cat.items.forEach(t=>{const b=document.createElement('button');b.className='msg';b.type='button';b.textContent=t;
+    b.onclick=()=>show(t,cat.c);g.appendChild(b)});
+  cats.appendChild(s);
+});
+const hc=document.createElement('button'); hc.className='chip'; hc.type='button'; hc.style.setProperty('--c','var(--muted)');
+hc.innerHTML='<i></i>אחרונות'; hc.onclick=()=>jump('history'); chips.appendChild(hc);
+
+// custom
+const ta=$('#ct'), showBtn=$('#showCustom');
+ta.value=store.get(K_LAST,'');
+const sync=()=>{showBtn.disabled=!ta.value.trim()}; sync();
+ta.addEventListener('input',()=>{store.set(K_LAST,ta.value);sync()});
+showBtn.onclick=()=>{const t=ta.value.trim(); if(t){ta.blur(); show(t,'--accent')}};
+ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();showBtn.click()}});
+$('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus()};
+$('#voiceBtn').onclick=()=>show(VOICE_MSG,'--c-voice');
+
+// history
+function renderHist(){
+  const h=store.get(K_HIST,[]), box=$('#hist'); box.innerHTML='';
+  $('#clearHist').style.visibility=h.length?'visible':'hidden';
+  if(!h.length){box.innerHTML='<div class="empty">עדיין אין הודעות. כל הודעה שתציג תופיע כאן.</div>';return}
+  h.forEach(m=>{const b=document.createElement('button');b.className='hist-item';b.type='button';
+    b.style.borderInlineStart=`4px solid var(${m.c||'--accent'})`;
+    const sp=document.createElement('span');sp.textContent=m.t.replace(/\n/g,' ');
+    const sm=document.createElement('small');sm.textContent=new Date(m.ts).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+    b.append(sp,sm);b.onclick=()=>show(m.t,m.c);box.appendChild(b)});
+}
+function pushHist(t,c){let h=store.get(K_HIST,[]).filter(m=>m.t!==t);h.unshift({t,c,ts:Date.now()});store.set(K_HIST,h.slice(0,MAX));renderHist()}
+$('#clearHist').onclick=()=>{store.set(K_HIST,[]);renderHist()};
+renderHist();
+
+// display
+const disp=$('#display'), dt=$('#dtext'), stage=$('#stage');
+let savedY=0;
+function fit(){
+  const W=stage.clientWidth, H=stage.clientHeight; let lo=24, hi=Math.min(W,H)*0.6, best=lo;
+  while(hi-lo>1){const mid=(lo+hi)/2; dt.style.fontSize=mid+'px';
+    if(dt.scrollWidth<=W && dt.scrollHeight<=H){best=mid;lo=mid}else hi=mid}
+  dt.style.fontSize=best+'px';
+}
+function show(t,c){
+  savedY=window.scrollY; dt.textContent=t; dt.innerHTML=dt.innerHTML.replace(/\n/g,'<br>');
+  disp.style.setProperty('--c',`var(${c||'--accent'})`);
+  disp.classList.add('on'); document.body.classList.add('showing'); fit(); pushHist(t,c); history.pushState({d:1},'');
+}
+function hide(fromPop){if(!disp.classList.contains('on'))return; disp.classList.remove('on');document.body.classList.remove('showing');
+  window.scrollTo(0,savedY); if(!fromPop&&history.state&&history.state.d)history.back()}
+disp.addEventListener('click',()=>hide(false));
+addEventListener('popstate',()=>hide(true));
+addEventListener('resize',()=>{if(disp.classList.contains('on'))fit()});
+addEventListener('keydown',e=>{if(e.key==='Escape')hide(false)});
+
+// keep screen awake + guard refresh
+let lock=null;
+async function wake(){try{if('wakeLock' in navigator&&document.visibilityState==='visible')lock=await navigator.wakeLock.request('screen')}catch(e){}}
+document.addEventListener('visibilitychange',wake); document.addEventListener('click',()=>{if(!lock)wake()},{once:true}); wake();
+addEventListener('beforeunload',e=>{e.preventDefault();e.returnValue=''});
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
