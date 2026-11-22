@@ -78,7 +78,13 @@ h2::before{content:"";width:5px;height:20px;border-radius:3px;background:var(--c
   background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);font-size:26px;line-height:52px}
 #dhint{text-align:center;color:rgba(0,0,0,.35);font-size:14px}
 body.showing{overflow:hidden}
-.ver{text-align:center;color:var(--muted);font-size:12px;opacity:.7}
+.ver{text-align:center;color:var(--muted);font-size:12px}
+.ver div{opacity:.75;margin-top:8px}
+.refresh{min-height:48px;padding:0 22px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-size:16px;font-weight:600;color:var(--text)}
+#ptr{position:fixed;top:0;inset-inline:0;z-index:40;display:flex;justify-content:center;pointer-events:none;
+  transform:translateY(-60px);padding-top:calc(env(safe-area-inset-top) + 8px)}
+#ptr span{background:var(--text);color:var(--bg);border-radius:999px;padding:10px 18px;font-size:15px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+#ptr.ready span{background:var(--accent);color:#fff}
 .gender{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .gender span{color:var(--muted);font-size:15px}
 .seg{flex:1;display:flex;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
@@ -86,11 +92,13 @@ body.showing{overflow:hidden}
 .seg button[aria-pressed="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(23,19,31,.15)}
 .cheers{display:flex;gap:10px;margin-bottom:16px}
 .cheer{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;min-height:96px;padding:8px;
-  border-radius:var(--r);background:linear-gradient(135deg,#ff8a3d,#ff5a3c);color:#fff;font-size:40px;font-weight:900;
+  border-radius:var(--r);background:linear-gradient(135deg,#ff8a3d,#ff5a3c);color:#fff;font-size:clamp(26px,6.5vw,40px);font-weight:900;
   box-shadow:0 4px 14px rgba(255,90,60,.3)}
-.cheer small{font-size:15px;font-weight:600;opacity:.9}
+.cheer small{font-size:clamp(12px,3.3vw,15px);font-weight:600;opacity:.9}
 .cheer.nice{background:linear-gradient(135deg,#1fb88f,#119a76);box-shadow:0 4px 14px rgba(17,154,118,.3)}
 .cheer.nice.playing{background:linear-gradient(135deg,#14946f,#0c7a5c)}
+.cheer.whistle{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 4px 14px rgba(37,99,235,.3)}
+.cheer.whistle.playing{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
 .cheer.playing{background:linear-gradient(135deg,#e2662a,#d8432a)}
 .cheer:active{transform:scale(.97)}
 .edit-toggle{min-height:44px;padding:0 16px;border-radius:12px;background:var(--card2);font-size:15px;font-weight:600;border:1px solid var(--line)}
@@ -115,6 +123,7 @@ body.editing .reset{display:block}
 </style>
 </head>
 <body>
+<div id="ptr"><span id="ptrText">↓ משוך לרענון</span></div>
 <main id="app">
   <header>
     <div><div class="brand">PALGI <b>TRAINING</b></div><div class="sub">תקשורת מאמן · לחיצה אחת למסך מלא</div></div>
@@ -131,10 +140,12 @@ body.editing .reset{display:block}
   <div class="cheers">
     <button class="cheer" id="cheerBtn" type="button"><span id="cheerLabel">עלה!</span><small>🔊 עידוד בקול</small></button>
     <button class="cheer nice" id="niceBtn" type="button" dir="ltr"><span>Nice!</span><small dir="rtl">🔊 עידוד בקול</small></button>
+    <button class="cheer whistle" id="whistleBtn" type="button" data-idle="🔊 סאונד"><span>שריקה</span><small>🔊 סאונד</small></button>
   </div>
   <audio id="cheerM" src="ale-m.mp3" preload="auto"></audio>
   <audio id="cheerF" src="ale-f.mp3" preload="auto"></audio>
   <audio id="niceA" src="nice.mp3" preload="auto"></audio>
+  <audio id="whistleA" src="whistle.m4a" preload="auto"></audio>
 
   <button class="voice" id="voiceBtn" type="button">
     <span class="ico">🤐</span>
@@ -159,7 +170,7 @@ body.editing .reset{display:block}
     <div class="hist-head"><h2>הודעות אחרונות</h2><button class="clear" id="clearHist" type="button">נקה היסטוריה</button></div>
     <div class="hist" id="hist"></div>
   </section>
-  <div class="ver">גרסה 8</div>
+  <div class="ver"><button class="refresh" id="refreshBtn" type="button">↻ רענן גרסה</button><div>גרסה 9 · אפשר גם למשוך את המסך למטה לרענון</div></div>
 </main>
 
 <div id="display" role="dialog" aria-modal="true">
@@ -258,7 +269,7 @@ $('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus(
 // voice buttons: pre-recorded Microsoft Avri voice, work offline. Tap again while playing = stop.
 const IDLE='🔊 עידוד בקול', PLAYING='⏹ לחץ לעצירה';
 const audios=[...document.querySelectorAll('audio')];
-function setState(btn,on){btn.classList.toggle('playing',on);btn.querySelector('small').textContent=on?PLAYING:IDLE}
+function setState(btn,on){btn.classList.toggle('playing',on);btn.querySelector('small').textContent=on?PLAYING:(btn.dataset.idle||IDLE)}
 let activeBtn=null; // which button is currently playing (tracked by us, not by the audio element — more reliable on iPad Safari)
 function stopAll(){audios.forEach(x=>{try{x.pause();x.currentTime=0}catch(e){}});activeBtn=null;document.querySelectorAll('.cheer').forEach(b=>setState(b,false))}
 function voiceButton(btn,pick){
@@ -269,6 +280,7 @@ function voiceButton(btn,pick){
     a.play().catch(()=>{activeBtn=null;setState(btn,false);btn.querySelector('small').textContent='⚠️ בדוק שהשמע פתוח'})}}
 voiceButton($('#cheerBtn'),()=>document.getElementById(gender==='f'?'cheerF':'cheerM'));
 voiceButton($('#niceBtn'),()=>$('#niceA'));
+voiceButton($('#whistleBtn'),()=>$('#whistleA'));
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
 
 // history
@@ -312,6 +324,20 @@ let lock=null;
 async function wake(){try{if('wakeLock' in navigator&&document.visibilityState==='visible')lock=await navigator.wakeLock.request('screen')}catch(e){}}
 document.addEventListener('visibilitychange',wake); document.addEventListener('click',()=>{if(!lock)wake()},{once:true}); wake();
 const guard=e=>{e.preventDefault();e.returnValue=''}; addEventListener('beforeunload',guard);
+// refresh to the newest version (button or pull-down)
+async function refreshApp(){
+  $('#ptrText').textContent='מרענן…'; $('#ptr').style.transform='translateY(0)';
+  try{const r=await navigator.serviceWorker?.getRegistration(); if(r) await r.update()}catch(e){}
+  removeEventListener('beforeunload',guard); location.reload();
+}
+$('#refreshBtn').onclick=refreshApp;
+(()=>{const ptr=$('#ptr'),txt=$('#ptrText'),PULL=130;let y0=null,dy=0;
+  addEventListener('touchstart',e=>{y0=(window.scrollY<=0&&!document.body.classList.contains('showing')&&e.touches.length===1&&e.target.tagName!=='TEXTAREA'&&e.target.tagName!=='INPUT')?e.touches[0].clientY:null;dy=0},{passive:true});
+  addEventListener('touchmove',e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy<=0||window.scrollY>0){ptr.style.transform='translateY(-60px)';return}
+    const d=Math.min(dy*0.5,90);ptr.style.transform=`translateY(${d-60}px)`;
+    const ok=dy>PULL;ptr.classList.toggle('ready',ok);txt.textContent=ok?'↻ שחרר לרענון':'↓ משוך לרענון'},{passive:true});
+  addEventListener('touchend',()=>{if(y0!=null&&dy>PULL&&window.scrollY<=0){refreshApp()}else{ptr.style.transform='translateY(-60px)';ptr.classList.remove('ready')}y0=null;dy=0},{passive:true});
+})();
 
 if('serviceWorker' in navigator){
   const hadController=!!navigator.serviceWorker.controller; let reloaded=false;
