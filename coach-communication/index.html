@@ -249,10 +249,13 @@ $('#clearCustom').onclick=()=>{ta.value='';store.set(K_LAST,'');sync();ta.focus(
 // cheer: plays a pre-recorded voice (Microsoft Avri), works offline
 const cheerBtn=$('#cheerBtn');
 ['cheerM','cheerF'].forEach(id=>{const a=document.getElementById(id);
-  a.addEventListener('playing',()=>{cheerBtn.classList.add('playing');$('#cheerState').textContent='🔊 מנגן…'});
+  a.addEventListener('playing',()=>{cheerBtn.classList.add('playing');$('#cheerState').textContent='⏹ לחץ לעצירה'});
   a.addEventListener('ended',()=>{cheerBtn.classList.remove('playing');$('#cheerState').textContent='🔊 עידוד בקול'})});
+const cheerIdle=()=>{cheerBtn.classList.remove('playing');$('#cheerState').textContent='🔊 עידוד בקול'};
 cheerBtn.onclick=()=>{const a=document.getElementById(gender==='f'?'cheerF':'cheerM');
+  const wasPlaying=[...document.querySelectorAll('audio')].some(x=>!x.paused);
   document.querySelectorAll('audio').forEach(x=>{x.pause();x.currentTime=0});
+  if(wasPlaying){cheerIdle();return}
   a.currentTime=0; a.play().catch(()=>{$('#cheerState').textContent='⚠️ בדוק שהשמע פתוח'})};
 $('#voiceBtn').onclick=()=>show(VOICE_MSG[gender],'--c-voice');
 
